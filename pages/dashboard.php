@@ -79,7 +79,12 @@ function hitungUmur($tanggalLahir)
 
 <div class="card card-red card-outline">
     <div class="card-header">
-        <h3 class="card-title">Jemaat Ulang Tahun Minggu Ini</h3>
+        <div class="d-flex justify-content-between align-items-center w-100 flex-wrap">
+            <h5 class="mb-0">Jemaat Ulang Tahun Minggu Ini</h5>
+            <a href="laporan/laporan_ultah.php" class="btn btn-warning" target="_blank">
+                Cetak
+            </a>
+        </div>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-hover" id="birthdayTable">
