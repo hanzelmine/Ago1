@@ -258,7 +258,7 @@ function renderExternalFilters(
       theme: "bootstrap4", // or bootstrap-5 if needed
       width: "100%",
       dropdownAutoWidth: true,
-      placeholder: "Pilih filter",
+      placeholder: "All",
       allowClear: true,
     });
   }

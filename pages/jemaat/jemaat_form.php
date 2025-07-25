@@ -28,7 +28,8 @@ $jemaat = [
 $keluarga_info = [
     'alamat' => '-',
     'rayon' => '-',
-    'keterangan' => '-'
+    'keterangan' => '-',
+    'tempat_tinggal' => '-'
 ];
 
 if ($action === 'edit' || $action === 'detail') {
@@ -43,7 +44,8 @@ if ($action === 'edit' || $action === 'detail') {
             $keluarga_info = [
                 'alamat' => $keluarga['alamat'],
                 'rayon' => $keluarga['nama_rayon'] ?? '-',
-                'keterangan' => $keluarga['keterangan'] ?? '-'
+                'keterangan' => $keluarga['keterangan'] ?? '-',
+                'tempat_tinggal' => $keluarga['tempat_tinggal'] ?? '-'
             ];
         }
     }
@@ -93,7 +95,7 @@ function formatTanggal($tgl)
 <?php if ($action === 'detail'): ?>
     <!-- DETAIL MODE -->
 
-    <div class="modal-body" style="padding-left: 8rem !important; padding-right: 8rem !important;">
+    <div class="modal-body px-3 px-sm-5 px-md-5 px-lg-5 px-xl-5">
         <div class="text-center mb-4">
             <h4 class="font-weight-bold text-uppercase"><?= $jemaat['nama_lengkap'] ?></h4>
             <p class="text-muted mb-0">Kode Keluarga: <?= $keluarga['kode_kk'] ?></p>
@@ -119,6 +121,7 @@ function formatTanggal($tgl)
             <div class="row mb-3">
                 <div class="col-md-4"><strong>Pendidikan Terakhir:</strong><br><?= $jemaat['pendidikan_terakhir'] ?></div>
                 <div class="col-md-4"><strong>Pekerjaan:</strong><br><?= $jemaat['pekerjaan'] ?></div>
+                <div class="col-md-4"><strong>Tempat Tinggal:</strong><br><?= $keluarga_info['tempat_tinggal'] ?></div>
                 <div class="col-md-4"></div>
             </div>
 
