@@ -2,14 +2,18 @@
 require_once '../vendor/autoload.php';
 require_once '../database.php';
 
-// Ambil data ulang tahun 7 hari ke depan
+// Ambil hari Senin dan Minggu minggu ini
+$monday = date('Y-m-d', strtotime('monday this week'));
+$sunday = date('Y-m-d', strtotime('sunday this week'));
+
+// Query ulang tahun berdasarkan bulan-hari (abaikan tahun)
 $ulangTahun = query("
     SELECT nama_lengkap, tanggal_lahir 
     FROM jemaat 
     WHERE DATE_FORMAT(tanggal_lahir, '%m-%d') 
-    BETWEEN DATE_FORMAT(NOW(), '%m-%d') 
-    AND DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 7 DAY), '%m-%d')
-    ORDER BY DAYOFYEAR(tanggal_lahir)
+          BETWEEN DATE_FORMAT('$monday', '%m-%d') 
+              AND DATE_FORMAT('$sunday', '%m-%d')
+    ORDER BY tanggal_lahir
 ");
 
 function hariIndo($tanggal)

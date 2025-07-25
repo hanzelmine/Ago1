@@ -6,17 +6,20 @@ $totalRayon = query("SELECT COUNT(*) AS total FROM rayon")[0]['total'];
 $totalKeluarga = query("SELECT COUNT(*) AS total FROM keluarga")[0]['total'];
 $totalJemaat = query("SELECT COUNT(*) AS total FROM jemaat")[0]['total'];
 
-// Ulang tahun dalam 7 hari
-$today = date('Y-m-d');
-$nextWeek = date('Y-m-d', strtotime('+7 days'));
+// Ambil hari Senin dan Minggu minggu ini
+$monday = date('Y-m-d', strtotime('monday this week'));
+$sunday = date('Y-m-d', strtotime('sunday this week'));
 
+// Query ulang tahun berdasarkan bulan-hari (abaikan tahun)
 $ulangTahun = query("
     SELECT nama_lengkap, tanggal_lahir 
     FROM jemaat 
-    WHERE DATE_FORMAT(tanggal_lahir, '%m-%d') BETWEEN DATE_FORMAT(NOW(), '%m-%d') 
-    AND DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 7 DAY), '%m-%d')
+    WHERE DATE_FORMAT(tanggal_lahir, '%m-%d') 
+          BETWEEN DATE_FORMAT('$monday', '%m-%d') 
+              AND DATE_FORMAT('$sunday', '%m-%d')
     ORDER BY tanggal_lahir
 ");
+
 
 function hariIndo($tanggal)
 {
