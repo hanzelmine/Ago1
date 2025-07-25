@@ -44,7 +44,7 @@ git clone https://github.com/hanzelmine/Ago1.git
 
 - Move the project folder into:
   ```
-  C:\xampp\htdocs\Ago1
+  C:\xampp\htdocs\gtm
   ```
 - Start **Apache** and **MySQL** via XAMPP Control Panel
 
@@ -79,7 +79,7 @@ Ensure these folders are writable by the web server for file uploads and PDF out
 ## ▶️ Running the Project
 
 1. Open browser and navigate to:  
-   [http://localhost/Ago1](http://localhost/Ago1)
+   [http://localhost/gtm](http://localhost/gtm)
 
 2. Login using admin credentials (or register if registration is enabled)
 
