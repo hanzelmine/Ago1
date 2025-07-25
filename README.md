@@ -57,7 +57,7 @@ A web-based Church Information System developed using PHP and MySQL, designed to
 
 ## 🧩 Directory Structure
 
-\`\`\`
+```
 Ago1/
 ├── assets/             # CSS, JS, images
 ├── functions/          # PHP logic for each module
@@ -66,7 +66,7 @@ Ago1/
 ├── index.php           # Main dashboard
 ├── database.php        # DB connection
 └── README.md
-\`\`\`
+```
 
 ## 📄 License
 
