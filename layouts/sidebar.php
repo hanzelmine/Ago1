@@ -1,6 +1,6 @@
         <aside class="main-sidebar sidebar-light-primary elevation-1">
-            <a href="index.php" class="brand-link bg-primary">
-                <img src="dist/img/logo2.png" alt="GTM" class="brand-image img-circle elevation-2">
+            <a href="index.php" class="brand-link bg-white">
+                <img src="dist/img/logo.png" alt="GTM" class="brand-image img-circle elevation-2">
                 <span class="brand-text">GMIT TAMARISKA MAULAFA</span>
             </a>
 

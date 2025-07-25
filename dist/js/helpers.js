@@ -35,7 +35,10 @@ function previewImage(inputSelector, imgSelector) {
 
       const reader = new FileReader();
       reader.onload = function (e) {
-        $img.attr("src", e.target.result).css("display", "block");
+        $img.attr("src", e.target.result).css({
+          display: "block",
+          margin: "0 auto",
+        });
       };
       reader.readAsDataURL(file);
     }

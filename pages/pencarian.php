@@ -136,15 +136,15 @@ function formatTanggal($tgl)
                 [0, 'asc']
             ],
             buttons: [{
+                extend: 'colvis',
+                text: 'Visibilitas Kolom'
+            }, {
                 extend: 'excel',
                 title: 'Data Jemaat',
                 text: 'Cetak Excel',
                 exportOptions: {
                     columns: ':visible:not(.not-export)'
                 }
-            }, {
-                extend: 'colvis',
-                text: 'Visibilitas Kolom'
             }, {
                 text: 'Cetak PDF',
                 action: function(e, dt, node, config) {
