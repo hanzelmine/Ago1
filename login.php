@@ -40,7 +40,7 @@ if (isset($_POST['login'])) {
 
                 <form action="" method="post">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="username" placeholder="Username" required>
+                        <input type="text" class="form-control" name="username" placeholder="Username" autofocus required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
