@@ -27,7 +27,6 @@ A web-based Church Information System developed using PHP and MySQL, designed to
 - ✅ Search and Filter with DataTables
 - ✅ Secure Login System with Role-based Redirects
 - ✅ Responsive AdminLTE Interface
-- ✅ Real-time Form Validation (jQuery Validate)
 - ✅ Modal-based Detail View & Print Functionality
 
 ---
@@ -62,18 +61,6 @@ git clone https://github.com/hanzelmine/Ago1.git
 $conn = mysqli_connect("localhost", "root", "", "gtm");
 ```
 
-### 5. Create Required Folders
-
-If not already present, create the following folders:
-
-```bash
-mkdir upload
-mkdir laporan
-chmod -R 775 upload laporan
-```
-
-Ensure these folders are writable by the web server for file uploads and PDF output.
-
 ---
 
 ## ▶️ Running the Project
@@ -89,47 +76,22 @@ Ensure these folders are writable by the web server for file uploads and PDF out
    - **Keluarga**: Manage family data
    - **Jemaat**: Manage church member details
 
-4. Use **search & filter** for quick data access
+4. Use **search & filter** for quick data access and click **Cetak** to generate PDF reports
 
-5. Go to **Laporan** to generate PDF reports (Jemaat/Keluarga)
-
-6. Click **Logout** to securely end your session
+5. Click **Logout** to securely end your session
 
 ---
-
-## 📁 Directory Structure
-
-```
-Ago1/
-├── assets/             # CSS, JS, images
-├── functions/          # PHP logic for jemaat, keluarga, rayon
-├── pages/              # Modular pages (jemaat.php, keluarga.php, rayon.php, laporan.php)
-├── upload/             # File uploads (images/docs if any)
-├── laporan/            # Generated PDF reports
-├── database.php        # Database connection
-├── index.php           # Entry point & login
-└── README.md
-```
 
 ---
 
 ## 🧠 Notes & Troubleshooting
 
-- Make sure the following **PHP extensions** are enabled:
-  - `mbstring`
-  - `gd`
-  - `intl`
-- Form validation uses jQuery Validate
 - Alert and confirmation messages are powered by SweetAlert2
 - DataTables may require internet or local JS files (check `assets/` or `plugins/`)
 - If PDF reports do not display, verify `mPDF` is properly installed in `vendor/` folder
 - In production, disable error display in `php.ini` for security
 
 ---
-
-## 🖼️ Screenshots
-
-> _(You can insert screenshots here to show dashboard, data forms, and sample reports)_
 
 ---
 
