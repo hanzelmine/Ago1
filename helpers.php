@@ -110,3 +110,20 @@ function is_logged_in()
 {
     return isset($_SESSION['user']);
 }
+
+
+function convertPngToJpgWithWhiteBg($pngPath, $outputPath)
+{
+    $image = imagecreatefrompng($pngPath);
+    if (!$image) return false;
+
+    $bg = imagecreatetruecolor(imagesx($image), imagesy($image));
+    $white = imagecolorallocate($bg, 255, 255, 255);
+    imagefill($bg, 0, 0, $white);
+    imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+    imagejpeg($bg, $outputPath, 90);
+
+    imagedestroy($image);
+    imagedestroy($bg);
+    return true;
+}
