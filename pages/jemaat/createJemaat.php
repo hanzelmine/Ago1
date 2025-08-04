@@ -193,9 +193,6 @@ function formatTanggal($tgl)
                 });
             }
 
-            // Initialize select2 on page load for the first/original form
-            $("select.select2").select2();
-
             // Apply required markers on the initial form(s) once on page load
             applyRequiredMarkers(document, [{
                     selector: "label.required",

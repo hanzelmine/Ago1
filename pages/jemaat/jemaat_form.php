@@ -155,7 +155,7 @@ function formatTanggal($tgl)
     </div>
 
     <div class="modal-footer">
-        <a href="laporan/laporan_jemaat.php?id=<?= $id_jemaat ?>" class="btn btn-warning" target="_blank">
+        <a href="laporan/jemaat/laporan_jemaat.php?id=<?= $id_jemaat ?>" class="btn btn-warning" target="_blank">
             Cetak
         </a>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

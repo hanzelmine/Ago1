@@ -146,7 +146,7 @@ function tanggalIndo($tanggal)
                             </div>
 
                             <div class="modal-footer">
-                                <a href="laporan/rekap_jemaat.php" class="btn btn-warning">Cetak Rekap Data Jemaat</a>
+                                <a href="laporan/jemaat/rekap_jemaat.php" class="btn btn-warning">Cetak Rekap Data Jemaat</a>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                             </div>
                         </div>

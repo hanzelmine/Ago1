@@ -1,6 +1,6 @@
 <?php
-require_once '../vendor/autoload.php';
-require_once '../database.php';
+require_once '../../vendor/autoload.php';
+require_once '../../database.php';
 
 $id = $_GET['id'] ?? null;
 if (!$id) die('ID Jemaat tidak ditemukan');

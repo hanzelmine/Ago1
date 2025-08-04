@@ -22,6 +22,8 @@ $routes = [
     'pencarian'   => 'pencarian.php',
     'jemaat'   => 'jemaat/jemaat.php',
     'createjemaat'  => 'jemaat/createJemaat.php', // add this
+    'baptisan'   => 'baptisan/baptisan.php',
+    'createbaptisan'  => 'baptisan/createbaptisan.php', // add this
     'logout'    => 'functions/auth.php'
 ];
 //===============================================================

@@ -34,8 +34,8 @@
                             </a>
                         </li>
 
-                        <li class="nav-item <?= in_array($page, ['createjemaat', 'jemaat', 'baptis', 'sidi', 'nikah']) ? 'menu-open' : '' ?>">
-                            <a href="#" class="nav-link <?= in_array($page, ['createjemaat', 'jemaat', 'baptis', 'sidi', 'nikah']) ? 'active' : '' ?>">
+                        <li class="nav-item <?= in_array($page, ['createjemaat', 'jemaat', 'baptisan', 'sidi', 'nikah']) ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= in_array($page, ['createjemaat', 'jemaat', 'baptisan', 'sidi', 'nikah']) ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-user-friends"></i>
                                 <p>
                                     Data Jemaat
@@ -50,7 +50,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index.php?page=baptis" class="nav-link <?= $page === 'baptis' ? 'active' : '' ?>">
+                                    <a href="index.php?page=baptisan" class="nav-link <?= $page === 'baptisan' ? 'active' : '' ?>">
                                         <!-- <i class="nav-icon fas fa-hands-water"></i> -->
                                         <i class="nav-icon fas fa-droplet"></i>
                                         <p>Baptisan</p>
