@@ -82,16 +82,12 @@ $conn = mysqli_connect("localhost", "root", "", "gtm");
 
 ---
 
----
-
 ## 🧠 Notes & Troubleshooting
 
 - Alert and confirmation messages are powered by SweetAlert2
 - DataTables may require internet or local JS files (check `assets/` or `plugins/`)
 - If PDF reports do not display, verify `mPDF` is properly installed in `vendor/` folder
 - In production, disable error display in `php.ini` for security
-
----
 
 ---
 

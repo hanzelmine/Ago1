@@ -5,7 +5,7 @@ require_once '../database.php';
 $id = $_GET['id'] ?? null;
 if (!$id) die('ID Jemaat tidak ditemukan');
 
-$jemaat = query("SELECT j.*, k.kode_kk, k.alamat, k.tempat_tinggal, r.nama_rayon, r.keterangan 
+$jemaat = query("SELECT j.*, k.kode_kk, k.alamat, k.tempat_tinggal, r.nama_rayon 
                 FROM jemaat j
                 LEFT JOIN keluarga k ON j.id_keluarga = k.id_keluarga
                 LEFT JOIN rayon r ON k.id_rayon = r.id_rayon
@@ -49,45 +49,60 @@ ob_start();
             color: #000;
         }
 
-        h2 {
+        .text-center {
             text-align: center;
-            margin-bottom: 25px;
+        }
+
+        h2 {
+            margin-bottom: 5px;
+            font-size: 18pt;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 10pt;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 12px;
         }
 
         td {
-            padding: 5px 8px;
+            padding: 6px;
             vertical-align: top;
         }
 
         .label {
-            width: 35%;
             font-weight: bold;
+            width: 40%;
         }
 
         .value {
-            width: 65%;
+            width: 60%;
         }
 
-        .spacer-row td {
-            padding-top: 12px;
+        .section-title {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #555;
+            margin: 12px 0 4px;
+            border-bottom: 1px solid #ccc;
         }
     </style>
 </head>
 
 <body>
 
-    <h2>Data Jemaat: <?= htmlspecialchars($jemaat['nama_lengkap']) ?></h2>
+    <div class="text-center">
+        <h2><?= htmlspecialchars($jemaat['nama_lengkap']) ?></h2>
+        <div class="subtitle">Kode Keluarga: <?= htmlspecialchars($jemaat['kode_kk']) ?></div>
+    </div>
 
+    <div class="section-title">Informasi Utama</div>
     <table>
-        <tr>
-            <td class="label">Nama Lengkap</td>
-            <td class="value"><?= htmlspecialchars($jemaat['nama_lengkap']) ?></td>
-        </tr>
         <tr>
             <td class="label">Jenis Kelamin</td>
             <td class="value"><?= htmlspecialchars($jemaat['jenis_kelamin']) ?></td>
@@ -97,21 +112,31 @@ ob_start();
             <td class="value"><?= htmlspecialchars($jemaat['tempat_lahir']) ?>, <?= formatTanggal($jemaat['tanggal_lahir']) ?></td>
         </tr>
         <tr>
-            <td class="label">Tempat Tinggal</td>
-            <td class="value"><?= htmlspecialchars($jemaat['tempat_tinggal']) ?></td>
-        </tr>
-        <tr>
             <td class="label">Status dalam Keluarga</td>
             <td class="value"><?= htmlspecialchars($jemaat['status_dlm_keluarga']) ?></td>
+        </tr>
+    </table>
+
+    <div class="section-title">Status Jemaat</div>
+    <table>
+        <tr>
+            <td class="label">Baptis / Sidi</td>
+            <td class="value"><?= htmlspecialchars($jemaat['status_baptis']) ?> / <?= htmlspecialchars($jemaat['status_sidi']) ?></td>
         </tr>
         <tr>
             <td class="label">Status Perkawinan</td>
             <td class="value"><?= htmlspecialchars($jemaat['status_perkawinan']) ?></td>
         </tr>
         <tr>
-            <td class="label">Status Baptis / Sidi</td>
-            <td class="value"><?= htmlspecialchars($jemaat['status_baptis']) ?> / <?= htmlspecialchars($jemaat['status_sidi']) ?></td>
+            <td class="label">Status Jemaat</td>
+            <td class="value">
+                <?= htmlspecialchars($jemaat['status_jemaat']) ?>
+            </td>
         </tr>
+    </table>
+
+    <div class="section-title">Pendidikan & Pekerjaan</div>
+    <table>
         <tr>
             <td class="label">Pendidikan Terakhir</td>
             <td class="value"><?= htmlspecialchars($jemaat['pendidikan_terakhir']) ?></td>
@@ -120,10 +145,10 @@ ob_start();
             <td class="label">Pekerjaan</td>
             <td class="value"><?= htmlspecialchars($jemaat['pekerjaan']) ?></td>
         </tr>
-        <tr>
-            <td class="label">Kode KK</td>
-            <td class="value"><?= htmlspecialchars($jemaat['kode_kk']) ?></td>
-        </tr>
+    </table>
+
+    <div class="section-title">Informasi Keluarga</div>
+    <table>
         <tr>
             <td class="label">Alamat</td>
             <td class="value"><?= htmlspecialchars($jemaat['alamat']) ?></td>
@@ -131,6 +156,10 @@ ob_start();
         <tr>
             <td class="label">Rayon</td>
             <td class="value"><?= htmlspecialchars($jemaat['nama_rayon']) ?></td>
+        </tr>
+        <tr>
+            <td class="label">Tempat Tinggal</td>
+            <td class="value"><?= htmlspecialchars($jemaat['tempat_tinggal']) ?></td>
         </tr>
     </table>
 

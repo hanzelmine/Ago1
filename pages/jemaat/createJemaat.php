@@ -26,196 +26,258 @@ function formatTanggal($tgl)
 }
 ?>
 
-<div class="card card-outline card-primary">
-    <div class="card-header">
-        <h5>Tambah Data Jemaat</h5>
-    </div>
-    <form method="POST" id="createJemaatForm">
-        <div class="card-body">
-            <div id="jemaatContainer">
-                <div class="card jemaat-form-group mb-3" data-index="0">
-                    <div class="card-header d-flex justify-content-between align-items-center jemaat-form-header">
-                        <!-- First form: only collapse button, no title or remove button -->
-                        <div class="d-flex w-100 justify-content-end">
-                            <button type="button" class="btn btn-warning btn-sm toggleCollapseBtn">
-                                <i class="fas fa-angle-up"></i>
-                            </button>
-                        </div>
-                    </div>
 
-                    <div class="card-body jemaat-form-body">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label>Nama Lengkap</label>
-                                <input type="text" name="nama_lengkap[]" class="form-control" pattern="[A-Za-z\s\.\,\-]+" title="Hanya huruf, spasi, titik, koma, dan tanda hubung" required>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label>Jenis Kelamin</label>
-                                <select name="jenis_kelamin[]" class="form-control" required>
-                                    <option value="">- Pilih -</option>
-                                    <option value="Laki-laki">Laki-laki</option>
-                                    <option value="Perempuan">Perempuan</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label>Tanggal Lahir</label>
-                                <input type="date" name="tanggal_lahir[]" class="form-control" required>
-                                <small>Bulan/Hari/Tahun</small>
-                            </div>
-                        </div>
+<h5>Tambah Data Jemaat</h5>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label>Tempat Lahir</label>
-                                <input type="text" name="tempat_lahir[]" class="form-control" pattern="[A-Za-z\s]+" required>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Keluarga</label>
-                                <select name="id_keluarga[]" class="form-control select2" required>
-                                    <option value="">- Pilih Keluarga -</option>
-                                    <?php foreach ($keluarga_list as $k): ?>
-                                        <option value="<?= $k['id_keluarga'] ?>"><?= htmlspecialchars($k['kode_kk']) ?> - <?= htmlspecialchars($k['nama_keluarga']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
+<form method="POST" id="createJemaatForm">
+    <div id="jemaatContainer">
+        <div class="card card-primary jemaat-form-group mb-3" data-index="0">
+            <div class="card-header d-flex justify-content-between align-items-center jemaat-form-header">
 
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label>Status Perkawinan</label>
-                                <select name="status_perkawinan[]" class="form-control" required>
-                                    <option value="">-- Pilih Status Perkawinan --</option>
-                                    <option value="Sudah Menikah">Sudah Menikah</option>
-                                    <option value="Belum Menikah">Belum Menikah</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Status Keluarga</label>
-                                <input type="text" name="status_dlm_keluarga[]" class="form-control" pattern="[A-Za-z\s]+" required>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Status Baptis</label>
-                                <select name="status_baptis[]" class="form-control" required>
-                                    <option value="">-- Pilih Status Baptis --</option>
-                                    <option value="Sudah Baptis">Sudah Baptis</option>
-                                    <option value="Belum Baptis">Belum Baptis</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label>Status Sidi</label>
-                                <select name="status_sidi[]" class="form-control" required>
-                                    <option value="">-- Pilih Status Sidi --</option>
-                                    <option value="Sudah Sidi">Sudah Sidi</option>
-                                    <option value="Belum Sidi">Belum Sidi</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Pendidikan Terakhir</label>
-                                <input type="text" name="pendidikan_terakhir[]" class="form-control" pattern="[A-Za-z\s]+">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Pekerjaan</label>
-                                <input type="text" name="pekerjaan[]" class="form-control" pattern="[A-Za-z\s]+">
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-tools ml-auto">
+                    <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <!-- No remove button on first form -->
                 </div>
             </div>
 
-            <div class="text-right mb-3">
-                <button type="button" class="btn btn-sm btn-secondary" id="addJemaatBtn">
-                    <i class="fas fa-plus"></i> Tambah Jemaat
-                </button>
+            <div class="card-body jemaat-form-body">
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        <label for="nama_lengkap_0" class="form-label required">Nama Lengkap</label>
+                        <input id="nama_lengkap_0" type="text" name="nama_lengkap[]" class="form-control" pattern="[A-Za-z\s\.\,\-]+" title="Hanya huruf, spasi, titik, koma, dan tanda hubung" required>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="id_keluarga_0" class="form-label select2-required required">Kode Kepala Keluarga</label>
+                        <select id="id_keluarga_0" name="id_keluarga[]" class="form-control  select2" required>
+                            <option value="">- Pilih Kode KK -</option>
+                            <?php foreach ($keluarga_list as $k): ?>
+                                <option value="<?= $k['id_keluarga'] ?>"><?= htmlspecialchars($k['kode_kk']) ?> - <?= htmlspecialchars($k['nama_keluarga']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="jenis_kelamin_0" class="form-label required">Jenis Kelamin</label>
+                        <select id="jenis_kelamin_0" name="jenis_kelamin[]" class="form-control" required>
+                            <option value="">- Pilih -</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="tempat_lahir_0" class="form-label required">Tempat Lahir</label>
+                        <input id="tempat_lahir_0" type="text" name="tempat_lahir[]" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" required>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="tanggal_lahir_0" class="form-label required">Tanggal Lahir</label>
+                        <input id="tanggal_lahir_0" type="date" name="tanggal_lahir[]" class="form-control" required>
+                        <small>Bulan/Hari/Tahun</small>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="status_dlm_keluarga_0" class="form-label required">Status dalam Keluarga</label>
+                        <input id="status_dlm_keluarga_0" type="text" name="status_dlm_keluarga[]" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" required>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="status_jemaat_0" class="form-label required">Status Jemaat</label>
+                        <input id="status_jemaat_0" type="text" name="status_jemaat[]" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" placeholder="Aktif/Pindah/Meninggal/dll" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="status_baptis_0" class="form-label required">Status Baptis</label>
+                        <select id="status_baptis_0" name="status_baptis[]" class="form-control" required>
+                            <option value="">-- Pilih Status Baptis --</option>
+                            <option value="Sudah Baptis">Sudah Baptis</option>
+                            <option value="Belum Baptis">Belum Baptis</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="status_sidi_0" class="form-label required">Status Sidi</label>
+                        <select id="status_sidi_0" name="status_sidi[]" class="form-control" required>
+                            <option value="">-- Pilih Status Sidi --</option>
+                            <option value="Sudah Sidi">Sudah Sidi</option>
+                            <option value="Belum Sidi">Belum Sidi</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="status_perkawinan_0" class="form-label required">Status Pernikahan</label>
+                        <select id="status_perkawinan_0" name="status_perkawinan[]" class="form-control" required>
+                            <option value="">-- Pilih Status Pernikahan --</option>
+                            <option value="Sudah Menikah">Sudah Menikah</option>
+                            <option value="Belum Menikah">Belum Menikah</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="pendidikan_terakhir_0">Pendidikan Terakhir</label>
+                        <input id="pendidikan_terakhir_0" type="text" name="pendidikan_terakhir[]" class="form-control">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="pekerjaan_0">Pekerjaan</label>
+                        <input id="pekerjaan_0" type="text" name="pekerjaan[]" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi">
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card-footer">
-            <div class="text-right">
-                <button type="submit" name="insertJemaat" class="btn btn-primary">Simpan</button>
-                <a href="index.php?page=jemaat" class="btn btn-secondary">Batal</a>
-            </div>
-        </div>
-    </form>
-</div>
+    </div>
 
-
+    <div class="text-right mb-3">
+        <button type="button" class="btn btn-sm btn-secondary" id="addJemaatBtn">
+            <i class="fas fa-plus"></i> Tambah Jemaat
+        </button>
+    </div>
+    <div class="text-right">
+        <button type="submit" name="insertJemaat" class="btn btn-primary">Simpan</button>
+        <a href="index.php?page=jemaat" class="btn btn-secondary">Batal</a>
+    </div>
+</form>
 
 <script>
-    $(function() {
-        const maxForm = 5;
+    document.addEventListener("DOMContentLoaded", () => {
+        $(function() {
+            const maxForm = 5;
 
-        function updateFormHeaders() {
-            const groups = $('.jemaat-form-group');
-            groups.each(function(index) {
-                const $header = $(this).find('.jemaat-form-header');
-                $header.empty();
+            function updateFormHeaders() {
+                const groups = $(".jemaat-form-group");
+                groups.each(function(index) {
+                    const $header = $(this).find(".jemaat-form-header");
+                    let $left = $header.children("div").not(".card-tools").first();
+                    const $right = $header.find(".card-tools");
 
-                const $left = $('<div><strong></strong></div>');
-                const $right = $('<div class="ml-auto d-flex align-items-center"></div>');
+                    if ($left.length === 0) {
+                        $left = $('<div><strong></strong></div>');
+                        if ($right.length) {
+                            $right.before($left);
+                        } else {
+                            $header.append($left);
+                        }
+                    }
 
-                if (index === 0 && groups.length === 1) {
-                    // Only collapse button
-                    $right.append(`<button type="button" class="btn btn-warning btn-sm toggleCollapseBtn"><i class="fas fa-angle-up"></i></button>`);
-                } else if (index === 0) {
-                    $left.find('strong').text(`Form Jemaat ke-1`);
-                    $right.append(`<button type="button" class="btn btn-warning btn-sm toggleCollapseBtn"><i class="fas fa-angle-up"></i></button>`);
-                } else {
-                    $left.find('strong').text(`Form Jemaat ke-${index + 1}`);
-                    $right.append(`
-                <button type="button" class="btn btn-warning btn-sm toggleCollapseBtn mr-2"><i class="fas fa-angle-up"></i></button>
-                <button type="button" class="btn btn-danger btn-sm removeJemaatBtn"><i class="fas fa-times"></i> Hapus</button>
-            `);
-                }
+                    let titleText = "";
+                    if (index === 0 && groups.length === 1) {
+                        titleText = `Form Jemaat`;
+                    } else if (index === 0) {
+                        titleText = `Form Jemaat ke-1`;
+                    } else {
+                        titleText = `Form Jemaat ke-${index + 1}`;
+                    }
+                    $left.find("strong").text(titleText);
 
-                $header.append($left).append($right);
-            });
-        }
+                    // Show remove button only if index > 0
+                    const $removeBtn = $right.find("button.btn-remove-confirm");
 
+                    if (index === 0) {
+                        if ($removeBtn.length) $removeBtn.remove();
+                    } else {
+                        if ($removeBtn.length === 0) {
+                            const removeBtn = $(`
+                                <button type="button" class="btn btn-tool btn-remove-confirm">
+                                 <i class="fas fa-times"></i>
+                                </button>
 
-        $('#addJemaatBtn').click(function() {
-            const totalForms = $('.jemaat-form-group').length;
-            if (totalForms >= maxForm) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Maksimal form tercapai!',
-                    text: `Hanya bisa menambah maksimal ${maxForm} form.`,
-                    timer: 1500, // 3 seconds
-                    timerProgressBar: false,
-                    showConfirmButton: false
+                            `);
+                            $right.append(removeBtn);
+                        }
+                    }
                 });
-
-                return;
             }
 
-            const $firstForm = $('.jemaat-form-group').first();
-            const $clone = $firstForm.clone();
+            // Initialize select2 on page load for the first/original form
+            $("select.select2").select2();
 
-            // Reset inputs
-            $clone.find('input, select').val('');
-            $clone.find('.jemaat-form-body').show();
-            $clone.attr('data-index', $('.jemaat-form-group').length);
+            // Apply required markers on the initial form(s) once on page load
+            applyRequiredMarkers(document, [{
+                    selector: "label.required",
+                    position: "label-right"
+                },
+                {
+                    selector: ".form-group.required",
+                    position: "above"
+                },
+                {
+                    selector: "label.required:not(.select2-required)",
+                    position: "label-right"
+                },
+                {
+                    selector: ".form-group.required.select2-required",
+                    position: "above"
+                },
+                {
+                    selector: ".form-group.required:not(.select2-required)",
+                    position: "above"
+                },
+            ]);
 
-            $('#jemaatContainer').append($clone);
-            updateFormHeaders();
-        });
-
-        $(document).on('click', '.removeJemaatBtn', function() {
-            $(this).closest('.jemaat-form-group').remove();
-            updateFormHeaders();
-        });
-
-        $(document).on('click', '.toggleCollapseBtn', function() {
-            const $btn = $(this);
-            const $body = $btn.closest('.jemaat-form-group').find('.jemaat-form-body');
-
-            $body.slideToggle(200, function() {
-                const icon = $btn.find('i');
-                icon.toggleClass('fa-angle-up fa-angle-down');
+            // Setup cloning with your clone function
+            cloneFormGroup({
+                containerSelector: "#jemaatContainer",
+                groupSelector: ".jemaat-form-group",
+                addBtnSelector: "#addJemaatBtn",
+                max: maxForm,
+                updateHeaders: updateFormHeaders,
+                requiredConfigs: [{
+                        selector: "label.required",
+                        position: "label-right"
+                    },
+                    {
+                        selector: ".form-group.required",
+                        position: "above"
+                    },
+                    {
+                        selector: "label.required:not(.select2-required)",
+                        position: "label-right"
+                    },
+                    {
+                        selector: ".form-group.required.select2-required",
+                        position: "above"
+                    },
+                    {
+                        selector: ".form-group.required:not(.select2-required)",
+                        position: "above"
+                    },
+                ],
             });
-        });
 
-        updateFormHeaders();
+            // Remove button handler (delegated) with confirmAction
+            $(document).on("click", ".jemaat-form-group .btn-remove-confirm", function() {
+                const $formGroup = $(this).closest(".jemaat-form-group");
+
+                confirmAction({
+                    title: "Yakin ingin menghapus form ini?",
+                    text: "Data dalam form ini akan hilang jika dihapus.",
+                    icon: "warning",
+                    confirmButtonText: "Ya, hapus",
+                    cancelButtonText: "Batal",
+                    callback: () => {
+                        $formGroup.remove();
+                        updateFormHeaders();
+
+                        Swal.fire({
+                            icon: "success",
+                            title: "Terhapus!",
+                            text: "Form telah berhasil dihapus.",
+                            timer: 1500,
+                            showConfirmButton: false,
+                        });
+                    },
+                });
+            });
+
+
+
+            // Initial header update
+            updateFormHeaders();
+        });
     });
 </script>

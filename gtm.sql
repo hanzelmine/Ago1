@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Jul 2025 pada 07.12
+-- Waktu pembuatan: 04 Agu 2025 pada 18.05
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -20,6 +20,39 @@ SET time_zone = "+00:00";
 --
 -- Database: `gtm`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `atestasi`
+--
+
+CREATE TABLE `atestasi` (
+  `id_atestasi` int(11) NOT NULL,
+  `id_jemaat` int(11) NOT NULL,
+  `jenis_atestasi` enum('Masuk','Keluar') NOT NULL,
+  `gereja_asal_tujuan` varchar(100) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `baptisan`
+--
+
+CREATE TABLE `baptisan` (
+  `id_baptisan` int(11) NOT NULL,
+  `id_jemaat` int(11) NOT NULL,
+  `tempat_baptis` varchar(100) DEFAULT NULL,
+  `tanggal_baptis` date NOT NULL,
+  `pendeta` varchar(100) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -64,6 +97,41 @@ CREATE TABLE `keluarga` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `meninggal`
+--
+
+CREATE TABLE `meninggal` (
+  `id_meninggal` int(11) NOT NULL,
+  `id_jemaat` int(11) NOT NULL,
+  `tanggal_meninggal` date NOT NULL,
+  `tempat_meninggal` varchar(100) DEFAULT NULL,
+  `sebab_meninggal` text DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `pernikahan`
+--
+
+CREATE TABLE `pernikahan` (
+  `id_pernikahan` int(11) NOT NULL,
+  `id_suami` int(11) DEFAULT NULL,
+  `id_istri` int(11) DEFAULT NULL,
+  `tempat_nikah` varchar(100) DEFAULT NULL,
+  `tanggal_nikah` date NOT NULL,
+  `pendeta` varchar(100) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `rayon`
 --
 
@@ -73,6 +141,23 @@ CREATE TABLE `rayon` (
   `keterangan` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `sidi`
+--
+
+CREATE TABLE `sidi` (
+  `id_sidi` int(11) NOT NULL,
+  `id_jemaat` int(11) NOT NULL,
+  `tempat_sidi` varchar(100) DEFAULT NULL,
+  `tanggal_sidi` date NOT NULL,
+  `pendeta` varchar(100) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -93,8 +178,27 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data untuk tabel `user`
+--
+
+INSERT INTO `user` (`id_user`, `nama`, `username`, `password`, `role`, `gambar`, `created_at`, `updated_at`) VALUES
+(1, 'Mikaylah Azalea', 'admin', '$2y$10$7CQDmt2HHPvROgtn0GP7VOyOjNk4TzYq7nx7M4Jsz8B3OhPZP0KUO', 'user', 'user_6890d85c8d4a0.jpg', '2025-08-04 15:57:16', '2025-08-04 15:57:16');
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indeks untuk tabel `atestasi`
+--
+ALTER TABLE `atestasi`
+  ADD PRIMARY KEY (`id_atestasi`);
+
+--
+-- Indeks untuk tabel `baptisan`
+--
+ALTER TABLE `baptisan`
+  ADD PRIMARY KEY (`id_baptisan`);
 
 --
 -- Indeks untuk tabel `jemaat`
@@ -110,11 +214,29 @@ ALTER TABLE `keluarga`
   ADD UNIQUE KEY `kode_kk` (`kode_kk`);
 
 --
+-- Indeks untuk tabel `meninggal`
+--
+ALTER TABLE `meninggal`
+  ADD PRIMARY KEY (`id_meninggal`);
+
+--
+-- Indeks untuk tabel `pernikahan`
+--
+ALTER TABLE `pernikahan`
+  ADD PRIMARY KEY (`id_pernikahan`);
+
+--
 -- Indeks untuk tabel `rayon`
 --
 ALTER TABLE `rayon`
   ADD PRIMARY KEY (`id_rayon`),
   ADD UNIQUE KEY `unique_nama_rayon` (`nama_rayon`);
+
+--
+-- Indeks untuk tabel `sidi`
+--
+ALTER TABLE `sidi`
+  ADD PRIMARY KEY (`id_sidi`);
 
 --
 -- Indeks untuk tabel `user`
@@ -125,6 +247,18 @@ ALTER TABLE `user`
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
+
+--
+-- AUTO_INCREMENT untuk tabel `atestasi`
+--
+ALTER TABLE `atestasi`
+  MODIFY `id_atestasi` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `baptisan`
+--
+ALTER TABLE `baptisan`
+  MODIFY `id_baptisan` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `jemaat`
@@ -139,16 +273,34 @@ ALTER TABLE `keluarga`
   MODIFY `id_keluarga` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT untuk tabel `meninggal`
+--
+ALTER TABLE `meninggal`
+  MODIFY `id_meninggal` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `pernikahan`
+--
+ALTER TABLE `pernikahan`
+  MODIFY `id_pernikahan` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `rayon`
 --
 ALTER TABLE `rayon`
   MODIFY `id_rayon` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT untuk tabel `sidi`
+--
+ALTER TABLE `sidi`
+  MODIFY `id_sidi` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

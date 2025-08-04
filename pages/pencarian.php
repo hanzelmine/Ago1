@@ -14,6 +14,7 @@ $pencarian = query("
         j.status_sidi,
         j.pendidikan_terakhir,
         j.pekerjaan,
+        j.status_jemaat,
 
         -- keluarga (tanpa created_at & updated_at)
         k.id_keluarga,
@@ -87,6 +88,7 @@ function formatTanggal($tgl)
                     <th>Pekerjaan</th>
                     <th>Alamat</th>
                     <th>Tempat Tinggal</th>
+                    <th>Status Jemaat</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,6 +109,7 @@ function formatTanggal($tgl)
                         <td><?= htmlspecialchars($row['pekerjaan']) ?></td>
                         <td><?= htmlspecialchars($row['alamat']) ?></td>
                         <td><?= htmlspecialchars($row['tempat_tinggal']) ?></td>
+                        <td><?= htmlspecialchars($row['status_jemaat']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -117,83 +120,106 @@ function formatTanggal($tgl)
 
 <script>
     $(function() {
-        const table = $('#pencarianTable').DataTable({
+        const $table = $('#pencarianTable');
+        const filterColumns = [1, 2, 3, 4, 10, 11, 14];
+
+        const table = $table.DataTable({
             scrollX: true,
             paging: true,
-            lengthChange: false,
             pageLength: 5,
+            lengthChange: false,
             searching: true,
-            ordering: true,
+            ordering: false,
             info: true,
             autoWidth: false,
             responsive: false,
-            // columnDefs: [{
-            //         orderable: false,
-            //         targets: 0
-            //     } // disable sorting on first column (index 0)
-            // ],
             order: [
                 [0, 'asc']
             ],
             buttons: [{
-                extend: 'colvis',
-                text: 'Visibilitas Kolom'
-            }, {
-                extend: 'excel',
-                title: 'Data Jemaat',
-                text: 'Cetak Excel',
-                exportOptions: {
-                    columns: ':visible:not(.not-export)'
+                    extend: 'colvis',
+                    text: 'Visibilitas Kolom'
+                },
+                {
+                    extend: 'excel',
+                    title: 'Data Jemaat',
+                    text: 'Cetak Excel',
+                    exportOptions: {
+                        columns: ':visible:not(.not-export)'
+                    }
+                },
+                {
+                    text: 'Cetak PDF',
+                    action: function(e, dt) {
+                        const visibleIndexes = dt.columns(':visible').indexes().toArray();
+                        const headers = visibleIndexes.map(i => dt.column(i).header().textContent.trim());
+                        const data = dt
+                            .rows({
+                                search: 'applied'
+                            })
+                            .data()
+                            .toArray()
+                            .map(row => visibleIndexes.map(i => row[i]));
+
+                        const activeFilters = getFilters(dt);
+
+                        // Create and submit form
+                        const form = $('<form>', {
+                            method: 'POST',
+                            action: 'laporan/laporan_pencarian.php',
+                            target: '_blank'
+                        }).appendTo('body');
+
+                        [{
+                                name: 'filteredData',
+                                value: JSON.stringify(data)
+                            },
+                            {
+                                name: 'visibleHeaders',
+                                value: JSON.stringify(headers)
+                            },
+                            {
+                                name: 'activeFilters',
+                                value: JSON.stringify(activeFilters)
+                            }
+                        ].forEach(input =>
+                            $('<input>', {
+                                type: 'hidden',
+                                ...input
+                            }).appendTo(form)
+                        );
+
+                        form.submit();
+                        form.remove();
+                    }
                 }
-            }, {
-                text: 'Cetak PDF',
-                action: function(e, dt, node, config) {
-                    const visibleIndexes = dt.columns(':visible').indexes().toArray();
-
-                    const headers = visibleIndexes.map(i =>
-                        dt.column(i).header().textContent.trim()
-                    );
-
-                    const data = dt.rows({
-                        search: 'applied'
-                    }).data().toArray().map(row => {
-                        return visibleIndexes.map(i => row[i]);
-                    });
-
-                    const form = $('<form>', {
-                        method: 'POST',
-                        action: 'laporan/laporan_pencarian.php',
-                        target: '_blank'
-                    }).appendTo('body');
-
-                    $('<input>', {
-                        type: 'hidden',
-                        name: 'filteredData',
-                        value: JSON.stringify(data)
-                    }).appendTo(form);
-
-                    $('<input>', {
-                        type: 'hidden',
-                        name: 'visibleHeaders',
-                        value: JSON.stringify(headers)
-                    }).appendTo(form);
-
-                    form.submit();
-                    form.remove();
-                }
-            }]
+            ]
         });
 
         table.buttons().container().appendTo('#pencarianTable_wrapper .col-md-6:eq(0)');
 
-        const filterColumns = [1, 2, 3, 4, 10, 11];
-        renderExternalFilters('#pencarianTable', '.filterArea', filterColumns);
+        // Initial filter render
+        renderExternalFiltersWithGetters('#pencarianTable', '.filterArea', filterColumns);
 
-        table.on('search.dt draw.dt', function() {
-            renderExternalFilters('#pencarianTable', '.filterArea', filterColumns);
+        // Only redraw filters if column visibility changes
+        table.on('column-visibility.dt', function() {
+            renderExternalFiltersWithGetters('#pencarianTable', '.filterArea', filterColumns);
         });
     });
+
+    // 🧠 Get active filters from a DataTable instance
+    function getFilters(table) {
+        const filters = {};
+        table.columns().every(function(i) {
+            const search = this.search();
+            if (search && search !== '') {
+                filters[this.header().textContent.trim()] = search.replace(/^\^|\$$/g, '');
+            }
+        });
+        return filters;
+    }
 </script>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

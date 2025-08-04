@@ -5,7 +5,7 @@ $action = $_GET['action'] ?? 'detail';
 $id_jemaat = $_GET['id'] ?? null;
 
 // Ambil data keluarga untuk dropdown
-$keluarga_list = query("SELECT id_keluarga, kode_kk FROM keluarga ORDER BY kode_kk");
+$keluarga_list = query("SELECT id_keluarga, kode_kk, nama_keluarga FROM keluarga ORDER BY kode_kk");
 
 $readonly = '';
 $submit_name = '';
@@ -28,6 +28,7 @@ $jemaat = [
 $keluarga_info = [
     'alamat' => '-',
     'rayon' => '-',
+    'nama_keluarga' => '-',
     'keterangan' => '-',
     'tempat_tinggal' => '-'
 ];
@@ -44,6 +45,7 @@ if ($action === 'edit' || $action === 'detail') {
             $keluarga_info = [
                 'alamat' => $keluarga['alamat'],
                 'rayon' => $keluarga['nama_rayon'] ?? '-',
+                'nama_keluarga' => $keluarga['nama_keluarga'] ?? '-',
                 'keterangan' => $keluarga['keterangan'] ?? '-',
                 'tempat_tinggal' => $keluarga['tempat_tinggal'] ?? '-'
             ];
@@ -108,20 +110,35 @@ function formatTanggal($tgl)
             <div class="row mb-3">
                 <div class="col-md-4"><strong>Jenis Kelamin:</strong><br><?= $jemaat['jenis_kelamin'] ?></div>
                 <div class="col-md-4"><strong>Tempat & Tanggal Lahir:</strong><br><?= $jemaat['tempat_lahir'] ?>, <?= formatTanggal($jemaat['tanggal_lahir']) ?></div>
+                <div class="col-md-4"><strong>Status dalam Keluarga:</strong><br><?= $jemaat['status_dlm_keluarga'] ?></div>
             </div>
 
             <!-- Status Jemaat -->
             <div class="row mb-3">
-                <div class="col-md-4"><strong>Status Keluarga:</strong><br><?= $jemaat['status_dlm_keluarga'] ?></div>
+
                 <div class="col-md-4"><strong>Baptis / Sidi:</strong><br><?= $jemaat['status_baptis'] ?> / <?= $jemaat['status_sidi'] ?></div>
                 <div class="col-md-4"><strong>Status Pernikahan:</strong><br><?= $jemaat['status_perkawinan'] ?></div>
+                <div class="col-md-4"><strong>Status Jemaat:</strong><br>
+                    <?php
+                    $status = $jemaat['status_jemaat'];
+                    $badgeClass = match ($status) {
+                        'Aktif'     => 'success',
+                        'Pindah'    => 'warning',
+                        'Meninggal' => 'danger',
+                        default     => 'secondary',
+                    };
+                    ?>
+
+                    <span class="badge badge-<?= $badgeClass ?>">
+                        <?= htmlspecialchars($status) ?>
+                    </span>
+                </div>
             </div>
 
             <!-- Pendidikan dan Pekerjaan -->
             <div class="row mb-3">
                 <div class="col-md-4"><strong>Pendidikan Terakhir:</strong><br><?= $jemaat['pendidikan_terakhir'] ?></div>
                 <div class="col-md-4"><strong>Pekerjaan:</strong><br><?= $jemaat['pekerjaan'] ?></div>
-                <div class="col-md-4"><strong>Tempat Tinggal:</strong><br><?= $keluarga_info['tempat_tinggal'] ?></div>
                 <div class="col-md-4"></div>
             </div>
 
@@ -130,8 +147,9 @@ function formatTanggal($tgl)
             <h6 class="text-secondary font-weight-bold">Informasi Keluarga</h6>
 
             <div class="row mb-3">
-                <div class="col-md-6"><strong>Alamat:</strong><br><?= $keluarga_info['alamat'] ?></div>
-                <div class="col-md-3"><strong>Rayon:</strong><br><?= $keluarga_info['rayon'] ?></div>
+                <div class="col-md-4"><strong>Alamat:</strong><br><?= $keluarga_info['alamat'] ?></div>
+                <div class="col-md-4"><strong>Rayon:</strong><br><?= $keluarga_info['rayon'] ?></div>
+                <div class="col-md-4"><strong>Tempat Tinggal:</strong><br><?= $keluarga_info['tempat_tinggal'] ?></div>
             </div>
         </div>
     </div>
@@ -152,7 +170,18 @@ function formatTanggal($tgl)
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Nama Lengkap</label>
-                    <input type="text" name="nama_lengkap" class="form-control" pattern="[A-Za-z\s\.\,\-]+" value="<?= htmlspecialchars($jemaat['nama_lengkap']) ?>" <?= $readonly ?> required>
+                    <input type="text" name="nama_lengkap" class="form-control" pattern="[A-Za-z\s\.\,\-]+" value="<?= htmlspecialchars($jemaat['nama_lengkap']) ?>" title="Hanya huruf, spasi, titik, koma, dan tanda hubung" <?= $readonly ?> required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Kode Kepala Keluarga</label>
+                    <select name="id_keluarga" class="form-control select2" <?= $readonly ?> required>
+                        <option value="">- Pilih Keluarga -</option>
+                        <?php foreach ($keluarga_list as $k): ?>
+                            <option value="<?= $k['id_keluarga'] ?>" <?= $jemaat['id_keluarga'] == $k['id_keluarga'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($k['kode_kk']) ?> - <?= htmlspecialchars($k['nama_keluarga']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group col-md-3">
                     <label>Jenis Kelamin</label>
@@ -162,48 +191,32 @@ function formatTanggal($tgl)
                         <option value="Perempuan" <?= $jemaat['jenis_kelamin'] === 'Perempuan' ? 'selected' : '' ?>>Perempuan</option>
                     </select>
                 </div>
+
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label>Tempat Lahir</label>
+                    <input type="text" name="tempat_lahir" class="form-control" value="<?= htmlspecialchars($jemaat['tempat_lahir']) ?>" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" <?= $readonly ?> required>
+                </div>
                 <div class="form-group col-md-3">
                     <label>Tanggal Lahir</label>
                     <input type="date" name="tanggal_lahir" class="form-control" value="<?= $jemaat['tanggal_lahir'] ?>" <?= $readonly ?> required>
                     <small>Bulan/Hari/Tahun</small>
                 </div>
+                <div class="form-group col-md-3">
+                    <label>Status dalam Keluarga</label>
+                    <input type="text" name="status_dlm_keluarga" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" value="<?= htmlspecialchars($jemaat['status_dlm_keluarga']) ?>" <?= $readonly ?> required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Status Jemaat</label>
+                    <input type="text" name="status_jemaat" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" value="<?= htmlspecialchars($jemaat['status_jemaat']) ?>" <?= $readonly ?> required>
+                    <small>(Aktif/Pindah/Meninggal/dll)</small>
+                </div>
+
             </div>
 
             <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label>Tempat Lahir</label>
-                    <input type="text" name="tempat_lahir" class="form-control" value="<?= htmlspecialchars($jemaat['tempat_lahir']) ?>" <?= $readonly ?> required>
-                </div>
-                <div class="form-group col-md-4">
-                    <label>Keluarga</label>
-                    <select name="id_keluarga" class="form-control select2" <?= $readonly ?> required>
-                        <option value="">- Pilih Keluarga -</option>
-                        <?php foreach ($keluarga_list as $k): ?>
-                            <option value="<?= $k['id_keluarga'] ?>" <?= $jemaat['id_keluarga'] == $k['id_keluarga'] ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($k['kode_kk']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label>Status Perkawinan</label>
-                    <!-- Status Perkawinan -->
-                    <select name="status_perkawinan" class="form-control" <?= $readonly === 'readonly' ? 'disabled' : '' ?>>
-                        <option value="">-- Pilih Status Perkawinan --</option>
-                        <option value="Sudah Menikah" <?= $jemaat['status_perkawinan'] == 'Sudah Menikah' ? 'selected' : '' ?>>Sudah Menikah</option>
-                        <option value="Belum Menikah" <?= $jemaat['status_perkawinan'] == 'Belum Menikah' ? 'selected' : '' ?>>Belum Menikah</option>
-                    </select>
-                    <?php if ($readonly === 'readonly'): ?>
-                        <input type="hidden" name="status_perkawinan" value="<?= htmlspecialchars($jemaat['status_perkawinan']) ?>">
-                    <?php endif; ?>
-                </div>
-                <div class="form-group col-md-4">
-                    <label>Status Keluarga</label>
-                    <input type="text" name="status_dlm_keluarga" class="form-control" value="<?= htmlspecialchars($jemaat['status_dlm_keluarga']) ?>" <?= $readonly ?> required>
-                </div>
                 <div class="form-group col-md-4">
                     <label>Status Baptis</label>
                     <!-- Status Baptis -->
@@ -216,9 +229,6 @@ function formatTanggal($tgl)
                         <input type="hidden" name="status_baptis" value="<?= htmlspecialchars($jemaat['status_baptis']) ?>">
                     <?php endif; ?>
                 </div>
-            </div>
-
-            <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Status Sidi</label>
                     <!-- Status Sidi -->
@@ -232,12 +242,28 @@ function formatTanggal($tgl)
                     <?php endif; ?>
                 </div>
                 <div class="form-group col-md-4">
+                    <label>Status Pernikahan</label>
+                    <!-- Status Perkawinan -->
+                    <select name="status_perkawinan" class="form-control" <?= $readonly === 'readonly' ? 'disabled' : '' ?>>
+                        <option value="">-- Pilih Status Pernikahan --</option>
+                        <option value="Sudah Menikah" <?= $jemaat['status_perkawinan'] == 'Sudah Menikah' ? 'selected' : '' ?>>Sudah Menikah</option>
+                        <option value="Belum Menikah" <?= $jemaat['status_perkawinan'] == 'Belum Menikah' ? 'selected' : '' ?>>Belum Menikah</option>
+                    </select>
+                    <?php if ($readonly === 'readonly'): ?>
+                        <input type="hidden" name="status_perkawinan" value="<?= htmlspecialchars($jemaat['status_perkawinan']) ?>">
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group col-md-4">
                     <label>Pendidikan Terakhir</label>
                     <input type="text" name="pendidikan_terakhir" class="form-control" value="<?= htmlspecialchars($jemaat['pendidikan_terakhir']) ?>" <?= $readonly ?>>
                 </div>
                 <div class="form-group col-md-4">
                     <label>Pekerjaan</label>
-                    <input type="text" name="pekerjaan" class="form-control" value="<?= htmlspecialchars($jemaat['pekerjaan']) ?>" <?= $readonly ?>>
+                    <input type="text" name="pekerjaan" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" value="<?= htmlspecialchars($jemaat['pekerjaan']) ?>" <?= $readonly ?>>
                 </div>
             </div>
         </div>

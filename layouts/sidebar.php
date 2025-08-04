@@ -82,7 +82,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="index.php?page=meninggal" class="nav-link <?= in_array($page, ['meninggal']) ? 'active' : '' ?>">
+                            <a href="index.php?page=astestasi" class="nav-link <?= in_array($page, ['astestasi']) ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-people-arrows"></i>
                                 <p>
                                     Data Astestasi

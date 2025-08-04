@@ -9,6 +9,8 @@ if (!isset($_POST['filteredData'], $_POST['visibleHeaders'])) {
 
 $data = json_decode($_POST['filteredData'], true);
 $headers = json_decode($_POST['visibleHeaders'], true);
+$activeFilters = isset($_POST['activeFilters']) ? json_decode($_POST['activeFilters'], true) : [];
+
 $totalRows = count($data);
 
 // Format tanggal Indonesia
@@ -33,10 +35,13 @@ function formatTanggalIndo($tgl)
     $tahun = date('Y', strtotime($tgl));
     return "$tanggal {$bulan[$bulanNum]} $tahun";
 }
+
 $tanggalCetak = formatTanggalIndo(date('Y-m-d'));
 
-// Ringkasan
-$ignoredLabels = ['#', 'Nama Lengkap', 'Tempat, Tanggal Lahir', 'Alamat'];
+// =============================
+// RINGKASAN PER KOLOM
+// =============================
+$ignoredLabels = ['#'];
 $columnSummary = [];
 $columnDetailCounts = [];
 
@@ -55,11 +60,12 @@ foreach ($headers as $index => $headerName) {
     }
 }
 
+// =============================
+// STYLING
+// =============================
 $stylesheet = <<<CSS
 <style>
     body { font-family: sans-serif; font-size: 11pt; }
-
-    /* Hapus style kop-container dan kop-teks yang sudah tidak dipakai */
 
     .tanggal-cetak {
         text-align: right;
@@ -88,21 +94,12 @@ $stylesheet = <<<CSS
         padding-left: 1.2rem;
         margin-top: 0.2rem;
     }
-
-    .rekap-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 10px;
-    }
-
-    .rekap-item {
-        font-size: 10pt;
-        border: 1px solid #ccc;
-        padding: 8px;
-        background: #f9f9f9;
-    }
 </style>
 CSS;
+
+// =============================
+// HEADER & KOP
+// =============================
 $kop = <<<HTML
 <table width="100%" style="border-collapse: collapse; border: none; margin-bottom: 15px;">
     <tr>
@@ -117,26 +114,36 @@ $kop = <<<HTML
         </td>
     </tr>
 </table>
-
 <div style="border-bottom: 2px solid #000;"></div>
-
 <div class="tanggal-cetak">Dicetak pada: $tanggalCetak</div>
 <strong>Total Data Ditampilkan:</strong> $totalRows baris<br><br>
-<strong>Rekap Kolom:</strong>
-<ul>
 HTML;
 
+// =============================
+// NARASI REKAP: FILTER AKTIF & KOLOM
+// =============================
+$visibleColumnsList = array_map('htmlspecialchars', $headers);
+$filterText = empty($activeFilters)
+    ? 'Tidak ada'
+    : implode(', ', array_map(
+        fn($k, $v) => htmlspecialchars($k) . ': ' . htmlspecialchars($v),
+        array_keys($activeFilters),
+        $activeFilters
+    ));
+
+$kop .= "<div style='margin-top:10px;'>";
+$kop .= "Laporan ini disusun berdasarkan <strong>filter</strong> yang diterapkan yaitu: ";
+$kop .= "<strong><em>$filterText</em></strong>. <br><br>";
+$kop .= "Kolom-kolom yang ditampilkan dalam laporan meliputi: ";
+$kop .= "<strong><em>" . implode(', ', $visibleColumnsList) . "</em></strong>. ";
 
 
 
-foreach ($columnSummary as $col => $jumlah) {
-    $kop .= "<li><strong>" . htmlspecialchars($col) . ":</strong> $jumlah nilai unik</li>";
-}
-$kop .= "</ul>";
 
-// Halaman 2: Detail Nilai dan Tabel Data
+// =============================
+// RINCIAN PER KOLOM
+// =============================
 $rekapHtml = "<strong>Rincian Nilai per Kolom:</strong><br><table style='border:0;'><tr>";
-
 $totalItems = count($columnDetailCounts);
 $cols = ($totalItems >= 6) ? 3 : (($totalItems >= 3) ? 2 : 1);
 $chunked = array_chunk($columnDetailCounts, ceil($totalItems / $cols), true);
@@ -154,7 +161,9 @@ foreach ($chunked as $columnGroup) {
 }
 $rekapHtml .= "</tr></table><br>";
 
-// Tabel Data
+// =============================
+// TABEL DATA
+// =============================
 $tableHtml = "<table><thead><tr>";
 foreach ($headers as $header) {
     $tableHtml .= "<th>" . htmlspecialchars($header) . "</th>";
@@ -170,17 +179,16 @@ foreach ($data as $row) {
 }
 $tableHtml .= "</tbody></table>";
 
-// Setup mPDF
+// =============================
+// GENERATE PDF
+// =============================
 $mpdf = new Mpdf(['format' => 'A4']);
 $mpdf->SetDisplayMode('fullpage');
 $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-
-// Halaman pertama potrait
 $mpdf->WriteHTML($kop, \Mpdf\HTMLParserMode::HTML_BODY);
 
-// Jika jumlah data besar, pisahkan ke halaman landscape
 if ($totalRows > 0) {
-    $mpdf->AddPage('L'); // Halaman 2 - Landscape
+    $mpdf->AddPage('L'); // Landscape
     $mpdf->WriteHTML($rekapHtml . $tableHtml, \Mpdf\HTMLParserMode::HTML_BODY);
 }
 

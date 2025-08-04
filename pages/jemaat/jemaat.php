@@ -71,6 +71,92 @@ function tanggalIndo($tanggal)
                 </div>
             </div>
             <div class="card-body">
+                <div class="d-flex justify-content-end align-items-center mb-1">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#recap">Rekap Data Jemaat</button>
+                </div>
+
+                <div class="modal fade" id="recap" tabindex="-1" role="dialog" aria-labelledby="recapLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Rekap Data Jemaat</h5>
+                            </div>
+                            <div class="modal-body">
+                                <?php
+                                $total = count($jemaat);
+
+                                $gender = [];
+                                $status_baptis = [];
+                                $status_sidi = [];
+                                $status_perkawinan = [];
+                                $pendidikan_terakhir = [];
+                                $pekerjaan = [];
+                                $status_jemaat = [];
+
+                                foreach ($jemaat as $j) {
+                                    $jk = $j['jenis_kelamin'] === 'Laki-laki' ? 'Laki-laki' : ($j['jenis_kelamin'] === 'Perempuan' ? 'Perempuan' : '-');
+
+                                    $baptis = $j['status_baptis'] ?? '-';
+                                    $sidi = $j['status_sidi'] ?? '-';
+                                    $perkawinan = $j['status_perkawinan'] ?? '-';
+                                    $pendidikan = $j['pendidikan_terakhir'] ?? '-';
+                                    $kerja = $j['pekerjaan'] ?? '-';
+                                    $stat = $j['status_jemaat'] ?? '-';
+
+                                    $gender[$jk] = ($gender[$jk] ?? 0) + 1;
+                                    $status_baptis[$baptis] = ($status_baptis[$baptis] ?? 0) + 1;
+                                    $status_sidi[$sidi] = ($status_sidi[$sidi] ?? 0) + 1;
+                                    $status_perkawinan[$perkawinan] = ($status_perkawinan[$perkawinan] ?? 0) + 1;
+                                    $pendidikan_terakhir[$pendidikan] = ($pendidikan_terakhir[$pendidikan] ?? 0) + 1;
+                                    $pekerjaan[$kerja] = ($pekerjaan[$kerja] ?? 0) + 1;
+                                    $status_jemaat[$stat] = ($status_jemaat[$stat] ?? 0) + 1;
+                                }
+
+                                function renderCountTable($title, $data)
+                                {
+                                    echo "<div class='mb-3'>";
+                                    echo "<h6 class='font-weight-bold'>$title</h6>";
+                                    echo "<table class='table table-sm table-bordered mb-0'>";
+                                    foreach ($data as $key => $val) {
+                                        echo "<tr><td>$key</td><td class='text-right'><strong>$val</strong> Orang</td></tr>";
+                                    }
+                                    echo "</table></div>";
+                                }
+                                ?>
+
+                                <p class="mb-4"><strong>Total Jemaat:</strong> <span class="text-dark"><?= $total ?> Orang</span></p>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <?php
+                                        renderCountTable("Jenis Kelamin", $gender);
+                                        renderCountTable("Status Baptis", $status_baptis);
+                                        renderCountTable("Status Sidi", $status_sidi);
+                                        renderCountTable("Status Perkawinan", $status_perkawinan);
+                                        renderCountTable("Status Jemaat", $status_jemaat);
+                                        ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <?php
+                                        renderCountTable("Pendidikan Terakhir", $pendidikan_terakhir);
+                                        renderCountTable("Pekerjaan", $pekerjaan);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <a href="laporan/rekap_jemaat.php" class="btn btn-warning">Cetak Rekap Data Jemaat</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
                 <table id="jemaatTable" class="table table-bordered table-hover">
                     <thead>
                         <tr>
@@ -194,7 +280,7 @@ function tanggalIndo($tanggal)
             "buttons": [{
                 extend: 'excel',
                 title: 'Data Jemaat',
-                text: 'Cetak Excel',
+                text: 'Cetak Data Jemaat <small>(excel)</small>',
                 exportOptions: {
                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // tanpa aksi
                     modifier: {

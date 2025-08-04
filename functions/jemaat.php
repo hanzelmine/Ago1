@@ -22,11 +22,13 @@ function insertJemaat($data)
         $query = "INSERT INTO jemaat (
             id_keluarga, nama_lengkap, jenis_kelamin,
             tempat_lahir, tanggal_lahir, status_perkawinan, status_dlm_keluarga,
-            status_baptis, status_sidi, pendidikan_terakhir, pekerjaan, created_at
+            status_baptis, status_sidi, pendidikan_terakhir, pekerjaan,
+            status_jemaat, created_at
         ) VALUES (
             '{$fields['id_keluarga']}', '{$fields['nama_lengkap']}', '{$fields['jenis_kelamin']}',
             '{$fields['tempat_lahir']}', '{$fields['tanggal_lahir']}', '{$fields['status_perkawinan']}', '{$fields['status_dlm_keluarga']}',
-            '{$fields['status_baptis']}', '{$fields['status_sidi']}', '{$fields['pendidikan_terakhir']}', '{$fields['pekerjaan']}', NOW()
+            '{$fields['status_baptis']}', '{$fields['status_sidi']}', '{$fields['pendidikan_terakhir']}', '{$fields['pekerjaan']}',
+            '{$fields['status_jemaat']}', NOW()
         )";
 
         $result = mysqli_query($conn, $query);
@@ -64,6 +66,7 @@ function updateJemaat($id, $data)
         status_sidi = '{$fields['status_sidi']}',
         pendidikan_terakhir = '{$fields['pendidikan_terakhir']}',
         pekerjaan = '{$fields['pekerjaan']}',
+        status_jemaat = '{$fields['status_jemaat']}',
         updated_at = NOW()
         WHERE id_jemaat = $id";
 
