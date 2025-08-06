@@ -74,7 +74,7 @@
 
 
                         <li class="nav-item">
-                            <a href="index.php?page=meninggal" class="nav-link <?= in_array($page, ['meninggal']) ? 'active' : '' ?>">
+                            <a href="index.php?page=meninggal" class="nav-link <?= in_array($page, ['meninggal', 'createmeninggal']) ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-dove"></i>
                                 <p>
                                     Data Meninggal

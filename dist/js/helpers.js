@@ -348,7 +348,9 @@ function cloneFormGroup({
 
     // Destroy select2 before cloning
     $original.find("select.select2").each(function () {
-      $(this).select2("destroy");
+      if ($(this).hasClass("select2-hidden-accessible")) {
+        $(this).select2("destroy");
+      }
     });
 
     const $clone = $original.clone();
@@ -381,11 +383,16 @@ function cloneFormGroup({
     // Append clone
     $container.append($clone);
 
-    // Re-init select2
-    $original.find("select.select2").select2();
+    // Re-init select2 only if not already initialized
+    $original.find("select.select2").each(function () {
+      if (!$(this).hasClass("select2-hidden-accessible")) {
+        $(this).select2({ theme: "bootstrap4" }); // ← Apply Bootstrap 4 theme
+      }
+    });
     $clone.find("select.select2").each(function () {
-      $(this).next(".select2-container").remove();
-      $(this).select2();
+      if (!$(this).hasClass("select2-hidden-accessible")) {
+        $(this).select2({ theme: "bootstrap4" }); // ← Apply Bootstrap 4 theme
+      }
     });
 
     // Show form-body if hidden
