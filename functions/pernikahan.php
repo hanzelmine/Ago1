@@ -47,44 +47,55 @@ function insertPernikahan($data)
 function updatePernikahan($id, $data)
 {
     global $conn;
-    $id = (int) $id;
 
     $fields = [];
     foreach ($data as $key => $value) {
+        if (is_array($value)) {
+            $value = $value[0] ?? '';
+        }
         $cleanValue = trim($value);
         $fields[$key] = mysqli_real_escape_string($conn, $cleanValue === '' ? '-' : $cleanValue);
     }
 
-    // Cek duplikat no_surat_nikah kecuali current id
-    $check = mysqli_query($conn, "SELECT 1 FROM pernikahan 
-        WHERE no_surat_nikah = '{$fields['no_surat_nikah']}' 
-        AND id_pernikahan != $id 
-        LIMIT 1");
-
-    if (mysqli_num_rows($check) > 0) {
-        error_log("Update gagal: No. Surat Nikah sudah digunakan.");
-        return 'duplicate';
+    // Check duplicate no_surat_nikah (excluding current id)
+    $cekSurat = mysqli_query($conn, "SELECT 1 FROM pernikahan WHERE no_surat_nikah = '{$fields['no_surat_nikah']}' AND id_pernikahan != $id LIMIT 1");
+    if (mysqli_num_rows($cekSurat) > 0) {
+        error_log("Update gagal: Nomor surat nikah sudah digunakan.");
+        return 'duplicate_surat';
     }
 
-    $query = "UPDATE pernikahan SET 
-        id_suami = '{$fields['id_suami']}',
-        id_istri = '{$fields['id_istri']}',
-        tempat_nikah = '{$fields['tempat_nikah']}',
-        tanggal_nikah = '{$fields['tanggal_nikah']}',
-        no_surat_nikah = '{$fields['no_surat_nikah']}',
-        pendeta = '{$fields['pendeta']}',
-        keterangan = '{$fields['keterangan']}',
-        updated_at = NOW()
-        WHERE id_pernikahan = $id";
+    // Check if the couple already exists (excluding current id)
+    $cekPasangan = mysqli_query($conn, "
+        SELECT 1 FROM pernikahan
+        WHERE id_suami = '{$fields['id_suami']}'
+        AND id_istri = '{$fields['id_istri']}'
+        AND id_pernikahan != $id
+        LIMIT 1
+    ");
+    if (mysqli_num_rows($cekPasangan) > 0) {
+        error_log("Update gagal: Pasangan suami-istri sudah terdaftar.");
+        return 'duplicate_pair';
+    }
+
+    // Update the record
+    $query = "
+        UPDATE pernikahan SET
+            id_suami = '{$fields['id_suami']}',
+            id_istri = '{$fields['id_istri']}',
+            tempat_nikah = '{$fields['tempat_nikah']}',
+            tanggal_nikah = '{$fields['tanggal_nikah']}',
+            no_surat_nikah = '{$fields['no_surat_nikah']}',
+            pendeta = '{$fields['pendeta']}',
+            keterangan = '{$fields['keterangan']}',
+            updated_at = NOW()
+        WHERE id_pernikahan = $id
+    ";
 
     $result = mysqli_query($conn, $query);
 
-    if (!$result) {
-        error_log("Gagal update pernikahan ID $id: " . mysqli_error($conn));
-    }
-
-    return $result;
+    return $result ? true : mysqli_error($conn);
 }
+
 
 function deletePernikahan($id)
 {

@@ -7,6 +7,27 @@ $pernikahan = query("SELECT p.*, j1.nama_lengkap AS nama_suami, j2.nama_lengkap 
                      LEFT JOIN jemaat j2 ON p.id_istri = j2.id_jemaat 
                      ORDER BY p.created_at DESC");
 
+if (isset($_POST['updatePernikahan'])) {
+    $id = $_POST['id_pernikahan'];
+    $data = $_POST;
+
+    $result = updatePernikahan($id, $data);
+
+    if ($result === true) {
+        set_alert('success', 'Berhasil Diupdate', 'Data pernikahan berhasil diperbarui.');
+    } elseif ($result === 'duplicate_surat') {
+        set_alert('error', 'Gagal Mengupdate', 'No. Surat Nikah sudah digunakan.');
+    } elseif ($result === 'duplicate_pair') {
+        set_alert('error', 'Gagal Mengupdate', 'Pasangan suami dan istri ini sudah terdaftar.');
+    } else {
+        set_alert('error', 'Gagal Mengupdate', 'Terjadi kesalahan saat memperbarui data.');
+    }
+
+    header("Location: index.php?page=pernikahan");
+    exit;
+}
+
+
 if (isset($_GET['deletePernikahan'])) {
     $id = $_GET['deletePernikahan'];
 
