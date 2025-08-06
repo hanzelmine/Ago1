@@ -34,8 +34,8 @@
                             </a>
                         </li>
 
-                        <li class="nav-item <?= in_array($page, ['createjemaat', 'jemaat', 'baptisan', 'sidi', 'nikah']) ? 'menu-open' : '' ?>">
-                            <a href="#" class="nav-link <?= in_array($page, ['createjemaat', 'jemaat', 'baptisan', 'sidi', 'nikah']) ? 'active' : '' ?>">
+                        <li class="nav-item <?= in_array($page, ['jemaat', 'baptisan', 'sidi', 'pernikahan', 'createjemaat', 'createbaptisan', 'createsidi', 'createpernikahan',]) ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= in_array($page, ['jemaat', 'baptisan', 'sidi', 'pernikahan', 'createjemaat', 'createbaptisan', 'createsidi', 'createpernikahan',]) ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-user-friends"></i>
                                 <p>
                                     Data Jemaat
@@ -50,20 +50,20 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index.php?page=baptisan" class="nav-link <?= $page === 'baptisan' ? 'active' : '' ?>">
+                                    <a href="index.php?page=baptisan" class="nav-link <?= in_array($page, ['createbaptisan', 'baptisan']) ? 'active' : '' ?>">
                                         <!-- <i class="nav-icon fas fa-hands-water"></i> -->
                                         <i class="nav-icon fas fa-droplet"></i>
                                         <p>Baptisan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index.php?page=sidi" class="nav-link <?= $page === 'sidi' ? 'active' : '' ?>">
+                                    <a href="index.php?page=sidi" class="nav-link <?= in_array($page, ['createsidi', 'sidi']) ? 'active' : '' ?>">
                                         <i class="nav-icon fas fa-book"></i>
                                         <p>Katekisasi Sidi</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index.php?page=nikah" class="nav-link <?= $page === 'nikah' ? 'active' : '' ?>">
+                                    <a href="index.php?page=pernikahan" class="nav-link <?= in_array($page, ['createpernikahan', 'pernikahan']) ? 'active' : '' ?>">
                                         <i class="nav-icon fas fa-ring"></i>
                                         <p>Pernikahan</p>
                                     </a>
@@ -82,10 +82,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="index.php?page=astestasi" class="nav-link <?= in_array($page, ['astestasi']) ? 'active' : '' ?>">
+                            <a href="index.php?page=atestasi" class="nav-link <?= in_array($page, ['atestasi']) ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-people-arrows"></i>
                                 <p>
-                                    Data Astestasi
+                                    Data Atestasi
                                 </p>
                             </a>
                         </li>

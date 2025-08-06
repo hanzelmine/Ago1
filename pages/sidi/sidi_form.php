@@ -2,48 +2,42 @@
 require_once '../../database.php';
 
 $action = $_GET['action'] ?? 'detail';
-$id_baptisan = $_GET['id'] ?? null;
-$id_jemaat = null;
-
+$id_jemaat = $_GET['id'] ?? null;
 
 $readonly = '';
 $submit_name = '';
 $title = '';
 
-$baptisan = [
-    'id_baptisan' => '',
+$sidi = [
+    'id_sidi' => '',
     'id_jemaat' => $id_jemaat,
-    'tempat_baptis' => '',
-    'tanggal_baptis' => '',
-    'no_surat_baptis' => '',
+    'tempat_sidi' => '',
+    'tanggal_sidi' => '',
+    'no_surat_sidi' => '',
     'pendeta' => '',
     'keterangan' => '',
     'nama_lengkap' => ''
 ];
 
-if ($id_baptisan) {
+if ($id_jemaat) {
     $result = query("
-        SELECT b.*, j.nama_lengkap 
-        FROM baptisan b
-        JOIN jemaat j ON b.id_jemaat = j.id_jemaat
-        WHERE b.id_baptisan = $id_baptisan
+        SELECT s.*, j.nama_lengkap 
+        FROM sidi s
+        JOIN jemaat j ON s.id_jemaat = j.id_jemaat
+        WHERE s.id_jemaat = $id_jemaat
     ");
 
     if (!empty($result)) {
-        $baptisan = $result[0];
+        $sidi = $result[0];
     }
-
-    // Set this too so hidden input works
-    $id_jemaat = $baptisan['id_jemaat'];
 }
-
 
 if ($action === 'detail') {
     $readonly = 'readonly disabled';
     $submit_name = '';
     $title = 'Detail';
 } else {
-    $submit_name = 'updateBaptisan';
+    $submit_name = 'updateSidi';
     $title = 'Edit';
 }
 
@@ -71,7 +65,7 @@ function formatTanggal($tgl)
 ?>
 
 <div class="modal-header <?= $action === "edit" ? "bg-success" : "bg-info" ?> text-white">
-    <h5 class="modal-title"><?= $title === "Detail" ? $title . " Baptisan" : $title . " Data: " . htmlspecialchars($baptisan['nama_lengkap']) ?></h5>
+    <h5 class="modal-title"><?= $title === "Detail" ? $title . " Sidi" : $title . " Data: " . htmlspecialchars($sidi['nama_lengkap']) ?></h5>
     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -81,21 +75,21 @@ function formatTanggal($tgl)
     <!-- DETAIL MODE -->
     <div class="modal-body px-3 px-sm-5">
         <div class="text-center mb-4">
-            <h4 class="font-weight-bold text-uppercase">Informasi Baptisan: <?= htmlspecialchars($baptisan['nama_lengkap']) ?></h4>
-
+            <h4 class="font-weight-bold text-uppercase">Informasi Sidi</h4>
+            <p class="text-black mb-2">Nama Jemaat: <strong><?= htmlspecialchars($sidi['nama_lengkap']) ?></strong></p>
         </div>
 
         <hr>
         <div class="container-fluid">
             <div class="row mb-3">
-                <div class="col-md-4"><strong>Tempat Baptis:</strong><br><?= htmlspecialchars($baptisan['tempat_baptis']) ?></div>
-                <div class="col-md-4"><strong>Tanggal Baptis:</strong><br><?= formatTanggal($baptisan['tanggal_baptis']) ?></div>
-                <div class="col-md-4"><strong>No Surat Baptis:</strong><br><?= htmlspecialchars($baptisan['no_surat_baptis']) ?></div>
+                <div class="col-md-4"><strong>Tempat Sidi:</strong><br><?= htmlspecialchars($sidi['tempat_sidi']) ?></div>
+                <div class="col-md-4"><strong>Tanggal Sidi:</strong><br><?= formatTanggal($sidi['tanggal_sidi']) ?></div>
+                <div class="col-md-4"><strong>No Surat Sidi:</strong><br><?= htmlspecialchars($sidi['no_surat_sidi']) ?></div>
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-4"><strong>Pendeta:</strong><br><?= htmlspecialchars($baptisan['pendeta']) ?></div>
-                <div class="col-md-8"><strong>Keterangan:</strong><br><?= htmlspecialchars($baptisan['keterangan']) ?></div>
+                <div class="col-md-4"><strong>Pendeta:</strong><br><?= htmlspecialchars($sidi['pendeta']) ?></div>
+                <div class="col-md-8"><strong>Keterangan:</strong><br><?= htmlspecialchars($sidi['keterangan']) ?></div>
             </div>
         </div>
     </div>
@@ -109,33 +103,33 @@ function formatTanggal($tgl)
     <!-- EDIT MODE -->
     <form method="POST">
         <div class="modal-body" style="max-height: calc(100vh - 200px); overflow-y: auto;">
-            <input type="hidden" name="id_baptisan" value="<?= $baptisan['id_baptisan'] ?>">
+            <input type="hidden" name="id_sidi" value="<?= $sidi['id_sidi'] ?>">
             <input type="hidden" name="id_jemaat" value="<?= $id_jemaat ?>">
 
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label>Tempat Baptis</label>
-                    <input type="text" name="tempat_baptis" class="form-control" value="<?= htmlspecialchars($baptisan['tempat_baptis']) ?>" <?= $readonly ?> required>
+                    <label>Tempat Sidi</label>
+                    <input type="text" name="tempat_sidi" class="form-control" value="<?= htmlspecialchars($sidi['tempat_sidi']) ?>" <?= $readonly ?> required>
                 </div>
                 <div class="form-group col-md-4">
-                    <label>Tanggal Baptis</label>
-                    <input type="date" name="tanggal_baptis" class="form-control" value="<?= $baptisan['tanggal_baptis'] ?>" <?= $readonly ?> required>
+                    <label>Tanggal Sidi</label>
+                    <input type="date" name="tanggal_sidi" class="form-control" value="<?= $sidi['tanggal_sidi'] ?>" <?= $readonly ?> required>
                     <small>Bulan/Tanggal/Tahun</small>
                 </div>
                 <div class="form-group col-md-4">
-                    <label>No Surat Baptis</label>
-                    <input type="text" name="no_surat_baptis" class="form-control" value="<?= htmlspecialchars($baptisan['no_surat_baptis']) ?>" <?= $readonly ?>>
+                    <label>No Surat Sidi</label>
+                    <input type="text" name="no_surat_sidi" class="form-control" value="<?= htmlspecialchars($sidi['no_surat_sidi']) ?>" <?= $readonly ?>>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Pendeta</label>
-                    <input type="text" name="pendeta" class="form-control" value="<?= htmlspecialchars($baptisan['pendeta']) ?>" <?= $readonly ?>>
+                    <input type="text" name="pendeta" class="form-control" value="<?= htmlspecialchars($sidi['pendeta']) ?>" <?= $readonly ?>>
                 </div>
                 <div class="form-group col-md-8">
                     <label>Keterangan</label>
-                    <textarea name="keterangan" class="form-control" rows="4" <?= $readonly ?>><?= htmlspecialchars($baptisan['keterangan']) ?></textarea>
+                    <textarea name="keterangan" class="form-control" rows="4" <?= $readonly ?>><?= htmlspecialchars($sidi['keterangan']) ?></textarea>
                 </div>
             </div>
         </div>

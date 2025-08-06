@@ -6,38 +6,45 @@ function insertBaptisan($data)
 {
     global $conn;
 
-    $fields = [];
-    foreach ($data as $key => $value) {
-        if (is_array($value)) {
-            $value = $value[0] ?? '';
+    $total = count($data['id_jemaat']);
+    $results = [];
+
+    for ($i = 0; $i < $total; $i++) {
+        $fields = [];
+
+        foreach ($data as $key => $value) {
+            $val = is_array($value) ? ($value[$i] ?? '') : $value;
+            $cleanValue = trim($val);
+            $fields[$key] = mysqli_real_escape_string($conn, $cleanValue === '' ? '-' : $cleanValue);
         }
-        $cleanValue = trim($value);
-        $fields[$key] = mysqli_real_escape_string($conn, $cleanValue === '' ? '-' : $cleanValue);
+
+        // Cek duplikat untuk id_jemaat atau no_surat_baptis
+        $check = mysqli_query($conn, "SELECT 1 FROM baptisan 
+            WHERE id_jemaat = '{$fields['id_jemaat']}' 
+               OR no_surat_baptis = '{$fields['no_surat_baptis']}' 
+            LIMIT 1");
+
+        if (mysqli_num_rows($check) > 0) {
+            $results[] = 'duplicate';
+            continue;
+        }
+
+        $query = "INSERT INTO baptisan (
+            id_jemaat, tempat_baptis, tanggal_baptis, no_surat_baptis,
+            pendeta, keterangan, created_at
+        ) VALUES (
+            '{$fields['id_jemaat']}', '{$fields['tempat_baptis']}', '{$fields['tanggal_baptis']}', '{$fields['no_surat_baptis']}',
+            '{$fields['pendeta']}', '{$fields['keterangan']}', NOW()
+        )";
+
+        $result = mysqli_query($conn, $query);
+        $results[] = $result ? true : false;
     }
 
-    // Check for duplicates
-    $check = mysqli_query($conn, "SELECT 1 FROM baptisan WHERE id_jemaat = '{$fields['id_jemaat']}' OR no_surat_baptis = '{$fields['no_surat_baptis']}' LIMIT 1");
-    if (mysqli_num_rows($check) > 0) {
-        error_log("Duplikat data: id_jemaat atau no_surat_baptis sudah digunakan.");
-        return 'duplicate';
-    }
-
-    $query = "INSERT INTO baptisan (
-        id_jemaat, tempat_baptis, tanggal_baptis, no_surat_baptis,
-        pendeta, keterangan, created_at
-    ) VALUES (
-        '{$fields['id_jemaat']}', '{$fields['tempat_baptis']}', '{$fields['tanggal_baptis']}', '{$fields['no_surat_baptis']}',
-        '{$fields['pendeta']}', '{$fields['keterangan']}', NOW()
-    )";
-
-    $result = mysqli_query($conn, $query);
-
-    if (!$result) {
-        error_log("Gagal insert baptisan: " . mysqli_error($conn));
-    }
-
-    return $result;
+    return $results;
 }
+
+
 function updateBaptisan($id, $data)
 {
     global $conn;

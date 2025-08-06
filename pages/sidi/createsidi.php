@@ -1,60 +1,41 @@
 <?php
 require_once 'database.php';
-require_once 'functions/baptisan.php'; // Pastikan ada file function sesuai
+require_once 'functions/sidi.php'; // Ganti dengan fungsi Sidi
 
-// Ambil data jemaat untuk dropdown
+// Ambil data jemaat yang belum memiliki sidi
 $jemaat_list = query("
     SELECT j.id_jemaat, j.nama_lengkap
     FROM jemaat j
-    LEFT JOIN baptisan b ON j.id_jemaat = b.id_jemaat
-    WHERE b.id_jemaat IS NULL
+    LEFT JOIN sidi s ON j.id_jemaat = s.id_jemaat
+    WHERE s.id_jemaat IS NULL
     ORDER BY j.nama_lengkap
 ");
 
-
-if (isset($_POST['insertBaptisan'])) {
+if (isset($_POST['insertSidi'])) {
     $data = $_POST;
 
-    $results = insertBaptisan($data);
+    $result = insertSidi($data);
 
-    $success = 0;
-    $duplicate = 0;
-    $fail = 0;
-
-    foreach ($results as $res) {
-        if ($res === true) {
-            $success++;
-        } elseif ($res === 'duplicate') {
-            $duplicate++;
-        } else {
-            $fail++;
-        }
+    if ($result === true) {
+        $total = count($_POST['tempat_sidi']);
+        set_alert('success', 'Berhasil Ditambahkan', "Berhasil menambahkan $total data sidi.");
+    } elseif ($result === 'duplicate') {
+        set_alert('error', 'Gagal Menambahkan', 'ID Jemaat atau No. Surat Sidi sudah digunakan.');
+    } else {
+        set_alert('error', 'Gagal Menambahkan', 'Terjadi kesalahan saat menambahkan data.');
     }
 
-    if ($success > 0) {
-        set_alert('success', 'Berhasil Ditambahkan', "Berhasil menambahkan $success data baptisan.");
-    }
-
-    if ($duplicate > 0) {
-        set_alert('warning', 'Data Duplikat', "$duplicate data duplikat (id jemaat atau no surat).");
-    }
-
-    if ($fail > 0) {
-        set_alert('error', 'Gagal Menambahkan', "$fail data gagal ditambahkan karena kesalahan sistem.");
-    }
-
-    header("Location: index.php?page=baptisan");
+    header("Location: index.php?page=sidi");
     exit;
 }
-
 ?>
 
-<h5>Tambah Data Baptisan</h5>
+<h5>Tambah Data Sidi</h5>
 
-<form method="POST" id="createBaptisanForm">
-    <div id="baptisanContainer">
-        <div class="card card-primary baptisan-form-group mb-3" data-index="0">
-            <div class="card-header d-flex justify-content-between align-items-center baptisan-form-header">
+<form method="POST" id="createSidiForm">
+    <div id="sidiContainer">
+        <div class="card card-success sidi-form-group mb-3" data-index="0">
+            <div class="card-header d-flex justify-content-between align-items-center sidi-form-header">
                 <div class="card-tools ml-auto">
                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -73,26 +54,25 @@ if (isset($_POST['insertBaptisan'])) {
                         </select>
                         <?php if (count($jemaat_list) === 0): ?>
                             <div class="alert alert-warning mt-2">
-                                Semua jemaat sudah memiliki data baptisan.
+                                Semua jemaat sudah memiliki data sidi.
                             </div>
                         <?php endif; ?>
-
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="tempat_baptis_0" class="form-label required">Tempat Baptis</label>
-                        <input id="tempat_baptis_0" type="text" name="tempat_baptis[]" class="form-control" required>
+                        <label for="tempat_sidi_0" class="form-label required">Tempat Sidi</label>
+                        <input id="tempat_sidi_0" type="text" name="tempat_sidi[]" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <label for="tanggal_baptis_0" class="form-label required">Tanggal Baptis</label>
-                        <input id="tanggal_baptis_0" type="date" name="tanggal_baptis[]" class="form-control" required>
+                        <label for="tanggal_sidi_0" class="form-label required">Tanggal Sidi</label>
+                        <input id="tanggal_sidi_0" type="date" name="tanggal_sidi[]" class="form-control" required>
                         <small>Bulan/Tanggal/Tahun</small>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="no_surat_baptis_0" class="form-label required">No Surat Baptis</label>
-                        <input id="no_surat_baptis_0" type="text" name="no_surat_baptis[]" class="form-control" required>
+                        <label for="no_surat_sidi_0" class="form-label required">No Surat Sidi</label>
+                        <input id="no_surat_sidi_0" type="text" name="no_surat_sidi[]" class="form-control" required>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="pendeta_0" class="form-label required">Pendeta</label>
@@ -109,11 +89,11 @@ if (isset($_POST['insertBaptisan'])) {
     </div>
 
     <div class="text-right mb-3">
-        <button type="button" class="btn btn-sm btn-secondary" id="addBaptisanBtn"><i class="fas fa-plus"></i> Tambah Form</button>
+        <button type="button" class="btn btn-sm btn-secondary" id="addSidiBtn"><i class="fas fa-plus"></i> Tambah Form</button>
     </div>
     <div class="text-right">
-        <button type="submit" name="insertBaptisan" class="btn btn-primary">Simpan</button>
-        <a href="index.php?page=baptisan" class="btn btn-secondary">Batal</a>
+        <button type="submit" name="insertSidi" class="btn btn-success">Simpan</button>
+        <a href="index.php?page=sidi" class="btn btn-secondary">Batal</a>
     </div>
 </form>
 
@@ -123,8 +103,8 @@ if (isset($_POST['insertBaptisan'])) {
             const maxForm = 5;
 
             function updateFormHeaders() {
-                $(".baptisan-form-group").each(function(index) {
-                    const $header = $(this).find(".baptisan-form-header");
+                $(".sidi-form-group").each(function(index) {
+                    const $header = $(this).find(".sidi-form-header");
                     let $left = $header.children("div").not(".card-tools").first();
                     const $right = $header.find(".card-tools");
 
@@ -133,7 +113,7 @@ if (isset($_POST['insertBaptisan'])) {
                         $right.before($left);
                     }
 
-                    $left.find("strong").text(`Form Baptisan ke-${index + 1}`);
+                    $left.find("strong").text(`Form Sidi ke-${index + 1}`);
 
                     const $removeBtn = $right.find("button.btn-remove-confirm");
                     if (index === 0) {
@@ -145,7 +125,7 @@ if (isset($_POST['insertBaptisan'])) {
                 });
             }
 
-            // Apply required markers on the initial form(s) once on page load
+            // Apply required markers (gunakan config kamu sebelumnya)
             applyRequiredMarkers(document, [{
                     selector: "label.required",
                     position: "label-right"
@@ -169,9 +149,9 @@ if (isset($_POST['insertBaptisan'])) {
             ]);
 
             cloneFormGroup({
-                containerSelector: "#baptisanContainer",
-                groupSelector: ".baptisan-form-group",
-                addBtnSelector: "#addBaptisanBtn",
+                containerSelector: "#sidiContainer",
+                groupSelector: ".sidi-form-group",
+                addBtnSelector: "#addSidiBtn",
                 max: maxForm,
                 updateHeaders: updateFormHeaders,
                 requiredConfigs: [{
@@ -197,8 +177,8 @@ if (isset($_POST['insertBaptisan'])) {
                 ],
             });
 
-            $(document).on("click", ".baptisan-form-group .btn-remove-confirm", function() {
-                const $formGroup = $(this).closest(".baptisan-form-group");
+            $(document).on("click", ".sidi-form-group .btn-remove-confirm", function() {
+                const $formGroup = $(this).closest(".sidi-form-group");
                 confirmAction({
                     title: "Hapus form ini?",
                     text: "Data akan dihapus permanen.",

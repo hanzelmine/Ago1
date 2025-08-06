@@ -24,6 +24,14 @@ $routes = [
     'createjemaat'  => 'jemaat/createJemaat.php', // add this
     'baptisan'   => 'baptisan/baptisan.php',
     'createbaptisan'  => 'baptisan/createbaptisan.php', // add this
+    'sidi'   => 'sidi/sidi.php',
+    'createsidi'  => 'sidi/createsidi.php', // add this
+    'pernikahan'   => 'pernikahan/pernikahan.php',
+    'createpernikahan'  => 'pernikahan/createpernikahan.php', // add this
+    'atestasi'   => 'atestasi/atestasi.php',
+    'createatestasi'  => 'atestasi/createatestasi.php', // add this
+    'meninggal'   => 'meninggal/meninggal.php',
+    'createmeninggal'  => 'meninggal/createmeninggal.php', // add this
     'logout'    => 'functions/auth.php'
 ];
 //===============================================================
