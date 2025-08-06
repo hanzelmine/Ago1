@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 04 Agu 2025 pada 18.05
+-- Waktu pembuatan: 06 Agu 2025 pada 15.15
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -48,6 +48,7 @@ CREATE TABLE `baptisan` (
   `id_jemaat` int(11) NOT NULL,
   `tempat_baptis` varchar(100) DEFAULT NULL,
   `tanggal_baptis` date NOT NULL,
+  `no_surat_baptis` varchar(100) DEFAULT NULL,
   `pendeta` varchar(100) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
@@ -67,12 +68,13 @@ CREATE TABLE `jemaat` (
   `jenis_kelamin` varchar(10) DEFAULT NULL,
   `tempat_lahir` varchar(100) DEFAULT NULL,
   `tanggal_lahir` date DEFAULT NULL,
-  `status_perkawinan` varchar(50) DEFAULT NULL,
   `status_dlm_keluarga` varchar(50) DEFAULT NULL,
   `status_baptis` varchar(20) DEFAULT NULL,
   `status_sidi` varchar(20) DEFAULT NULL,
+  `status_perkawinan` varchar(50) DEFAULT NULL,
   `pendidikan_terakhir` varchar(50) DEFAULT NULL,
   `pekerjaan` varchar(100) DEFAULT NULL,
+  `status_jemaat` varchar(50) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -123,6 +125,7 @@ CREATE TABLE `pernikahan` (
   `id_istri` int(11) DEFAULT NULL,
   `tempat_nikah` varchar(100) DEFAULT NULL,
   `tanggal_nikah` date NOT NULL,
+  `no_surat_nikah` varchar(100) DEFAULT NULL,
   `pendeta` varchar(100) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
@@ -154,6 +157,7 @@ CREATE TABLE `sidi` (
   `id_jemaat` int(11) NOT NULL,
   `tempat_sidi` varchar(100) DEFAULT NULL,
   `tanggal_sidi` date NOT NULL,
+  `no_surat_sidi` varchar(100) DEFAULT NULL,
   `pendeta` varchar(100) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
@@ -178,13 +182,6 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `user`
---
-
-INSERT INTO `user` (`id_user`, `nama`, `username`, `password`, `role`, `gambar`, `created_at`, `updated_at`) VALUES
-(1, 'Mikaylah Azalea', 'admin', '$2y$10$7CQDmt2HHPvROgtn0GP7VOyOjNk4TzYq7nx7M4Jsz8B3OhPZP0KUO', 'user', 'user_6890d85c8d4a0.jpg', '2025-08-04 15:57:16', '2025-08-04 15:57:16');
-
---
 -- Indexes for dumped tables
 --
 
@@ -198,7 +195,9 @@ ALTER TABLE `atestasi`
 -- Indeks untuk tabel `baptisan`
 --
 ALTER TABLE `baptisan`
-  ADD PRIMARY KEY (`id_baptisan`);
+  ADD PRIMARY KEY (`id_baptisan`),
+  ADD UNIQUE KEY `id_jemaat` (`id_jemaat`),
+  ADD UNIQUE KEY `no_surat_baptis` (`no_surat_baptis`);
 
 --
 -- Indeks untuk tabel `jemaat`
@@ -223,7 +222,8 @@ ALTER TABLE `meninggal`
 -- Indeks untuk tabel `pernikahan`
 --
 ALTER TABLE `pernikahan`
-  ADD PRIMARY KEY (`id_pernikahan`);
+  ADD PRIMARY KEY (`id_pernikahan`),
+  ADD UNIQUE KEY `no_surat_nikah` (`no_surat_nikah`);
 
 --
 -- Indeks untuk tabel `rayon`
@@ -300,7 +300,7 @@ ALTER TABLE `sidi`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

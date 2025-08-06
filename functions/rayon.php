@@ -1,50 +1,51 @@
 <?php
 require_once 'database.php';
 
-function isNamaRayonExists($nama_rayon, $exclude_id = null)
-{
-    global $conn;
-    $nama_rayon = mysqli_real_escape_string($conn, trim($nama_rayon));
-
-    $query = "SELECT COUNT(*) as total FROM rayon WHERE nama_rayon = '$nama_rayon'";
-    if ($exclude_id !== null) {
-        $query .= " AND id_rayon != " . (int)$exclude_id;
-    }
-
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
-    return $row['total'] > 0;
-}
-
 function insertRayon($data)
 {
     global $conn;
-    $fields = [];
 
-    foreach ($data as $key => $value) {
-        $cleanValue = trim($value);
-        $fields[$key] = mysqli_real_escape_string($conn, $cleanValue === '' ? '-' : $cleanValue);
+    $total = count($data['nama_rayon']);
+    $results = [];
+
+    for ($i = 0; $i < $total; $i++) {
+        $fields = [];
+
+        foreach ($data as $key => $value) {
+            $val = is_array($value) ? ($value[$i] ?? '') : $value;
+            $cleanValue = trim($val);
+            $fields[$key] = mysqli_real_escape_string($conn, $cleanValue === '' ? '-' : $cleanValue);
+        }
+
+        // Cek duplikat nama_rayon
+        $check = mysqli_query($conn, "SELECT 1 FROM rayon 
+            WHERE nama_rayon = '{$fields['nama_rayon']}' 
+            LIMIT 1");
+
+        if (mysqli_num_rows($check) > 0) {
+            $results[] = 'duplicate';
+            continue;
+        }
+
+        $query = "INSERT INTO rayon (nama_rayon, keterangan, created_at) VALUES (
+            '{$fields['nama_rayon']}', 
+            '{$fields['keterangan']}', 
+            NOW()
+        )";
+
+        $result = mysqli_query($conn, $query);
+
+        if ($result) {
+            $results[] = true;
+        } else {
+            error_log("Gagal insert rayon: " . mysqli_error($conn));
+            $results[] = false;
+        }
     }
 
-    // Cek duplikat
-    if (isNamaRayonExists($fields['nama_rayon'])) {
-        return 'duplicate_nama_rayon';
-    }
-
-    $query = "INSERT INTO rayon (nama_rayon, keterangan, created_at) VALUES (
-        '{$fields['nama_rayon']}', 
-        '{$fields['keterangan']}', 
-        NOW()
-    )";
-
-    $result = mysqli_query($conn, $query);
-
-    if (!$result) {
-        error_log("Gagal insert rayon: " . mysqli_error($conn));
-    }
-
-    return $result ? true : false;
+    return $results;
 }
+
 
 function updateRayon($id, $data)
 {
@@ -57,9 +58,14 @@ function updateRayon($id, $data)
         $fields[$key] = mysqli_real_escape_string($conn, $cleanValue === '' ? '-' : $cleanValue);
     }
 
-    // Cek duplikat selain ID ini
-    if (isNamaRayonExists($fields['nama_rayon'], $id)) {
-        return 'duplicate_nama_rayon';
+    // Cek duplikat nama_rayon, tapi abaikan record dengan ID yang sedang diupdate
+    $check = mysqli_query($conn, "SELECT 1 FROM rayon 
+        WHERE nama_rayon = '{$fields['nama_rayon']}' 
+        AND id_rayon != $id 
+        LIMIT 1");
+
+    if (mysqli_num_rows($check) > 0) {
+        return 'duplicate';
     }
 
     $query = "UPDATE rayon SET 
@@ -76,6 +82,7 @@ function updateRayon($id, $data)
 
     return $result ? true : false;
 }
+
 
 function deleteRayon($data)
 {

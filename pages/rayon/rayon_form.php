@@ -1,8 +1,7 @@
 <?php
 require_once '../../database.php';
 
-
-$action = $_GET['action'] ?? 'add';
+$action = $_GET['action'] ?? '';
 $id_rayon = $_GET['id'] ?? null;
 
 $readonly = '';
@@ -27,12 +26,12 @@ if ($action === 'edit' || $action === 'detail') {
         $title = 'Edit';
     }
 } else {
-    $submit_name = 'insertRayon';
-    $title = 'Tambah';
+    http_response_code(400);
+    exit('Aksi tidak valid');
 }
 ?>
 
-<div class="modal-header <?= $action === 'add' ? 'bg-primary' : ($action === 'edit' ? 'bg-success' : ($action === 'detail' ? 'bg-info' : '')) ?> text-white">
+<div class="modal-header <?= $action === 'edit' ? 'bg-success' : ($action === 'detail' ? 'bg-info' : '') ?> text-white">
     <h5 class="modal-title"><?= $title ?> Data Rayon</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span>&times;</span>
@@ -49,7 +48,7 @@ if ($action === 'edit' || $action === 'detail') {
             <input type="text"
                 name="nama_rayon"
                 placeholder="Contoh : Rayon 1"
-                class="form-control"
+                class="form-control capitalize-first"
                 pattern="^Rayon\s[1-9][0-9]*$"
                 title="Format harus 'Rayon' diikuti spasi dan angka, contoh: Rayon 1"
                 value="<?= htmlspecialchars($rayon['nama_rayon']) ?>"
@@ -63,7 +62,7 @@ if ($action === 'edit' || $action === 'detail') {
     </div>
     <div class="modal-footer">
         <?php if ($submit_name): ?>
-            <button type="submit" name="<?= $submit_name ?>" class="btn <?= $action === 'add' ? 'bg-primary' : ($action === 'edit' ? 'bg-success' : ($action === 'detail' ? 'bg-info' : '')) ?>">Simpan</button>
+            <button type="submit" name="<?= $submit_name ?>" class="btn <?= $action === 'edit' ? 'bg-success' : ($action === 'detail' ? 'bg-info' : '') ?>">Simpan</button>
         <?php endif; ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
     </div>

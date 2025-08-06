@@ -12,6 +12,7 @@ $rayon = query("
         keluarga k ON k.id_rayon = r.id_rayon
     GROUP BY 
         r.id_rayon
+    ORDER BY r.nama_rayon
 ");
 
 
@@ -34,7 +35,7 @@ if (isset($_POST['insertRayon'])) {
     $result = insertRayon($_POST);
     if ($result === true) {
         set_alert('success', 'Berhasil Ditambahkan', 'Data rayon berhasil ditambahkan.');
-    } elseif ($result === 'duplicate_nama_rayon') {
+    } elseif ($result === 'duplicate') {
         set_alert('warning', 'Nama Rayon Duplikat', 'Nama rayon sudah digunakan. Silakan gunakan nama lain.');
     } else {
         set_alert('error', 'Gagal Menambahkan', 'Terjadi kesalahan saat menambahkan data.');
@@ -64,9 +65,9 @@ if (isset($_POST['updateRayon'])) {
             <div class="card-header ">
                 <div class="d-flex justify-content-between align-items-center w-100 flex-wrap">
                     <h5 class="mb-0">Data Rayon</h5>
-                    <button class="btn btn-primary btn-sm addRayonBtn">
-                        <i class="fas fa-plus"></i> Tambah Rayon
-                    </button>
+                    <a href="index.php?page=createrayon" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Tambah Data
+                    </a>
                 </div>
             </div>
             <!-- /.card-header -->
@@ -127,10 +128,6 @@ if (isset($_POST['updateRayon'])) {
             $('#rayonModal').modal('show');
         });
     }
-
-    $(document).on('click', '.addRayonBtn', function() {
-        loadRayonModal('add');
-    });
 
     $(document).on('click', '.editRayonBtn', function() {
         const id = $(this).data('id');

@@ -18,7 +18,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="index.php?page=rayon" class="nav-link <?= ($page === 'rayon') ? 'active' : '' ?>">
+                            <a href="index.php?page=rayon" class="nav-link <?= in_array($page, ['rayon', 'createrayon']) ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-location-dot"></i>
                                 <p>
                                     Data Rayon
@@ -26,7 +26,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="index.php?page=keluarga" class="nav-link <?= ($page === 'keluarga') ? 'active' : '' ?>">
+                            <a href="index.php?page=keluarga" class="nav-link <?= in_array($page, ['keluarga', 'createkeluarga']) ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-house-user"></i>
                                 <p>
                                     Data Keluarga

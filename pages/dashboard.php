@@ -240,7 +240,6 @@ foreach ($dataBaru as $items) {
             </ul>
         <?php else: ?>
             <h6 class="mt-3"><strong><i class="fas fa-minus-circle me-2 text-purple"></i> <em>Tidak ada Data Baru minggu ini.</em></strong></h6>
-
         <?php endif; ?>
     </div>
 </div>

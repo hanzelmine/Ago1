@@ -25,21 +25,12 @@ if (isset($_GET['deleteKeluarga'])) {
     exit;
 }
 
-if (isset($_POST['insertKeluarga'])) {
-    $result = insertKeluarga($_POST);
-    if ($result === true) {
-        set_alert('success', 'Berhasil Ditambahkan', 'Data keluarga berhasil ditambahkan.');
-    } elseif ($result === 'duplicate_kode_kk') {
-        set_alert('warning', 'Kode KK Duplikat', 'Kode KK sudah digunakan oleh keluarga lain.');
-    } else {
-        set_alert('error', 'Gagal Menambahkan', 'Terjadi kesalahan saat menambahkan data.');
-    }
-    header("Location: index.php?page=keluarga");
-    exit;
-}
-
 if (isset($_POST['updateKeluarga'])) {
-    $result = updateKeluarga($_POST['id_keluarga'], $_POST);
+    $id = $_POST['id_keluarga'];
+    $data = $_POST;
+
+    $result = updateKeluarga($id, $data);
+
     if ($result === true) {
         set_alert('success', 'Berhasil Diupdate', 'Data keluarga berhasil diperbarui.');
     } elseif ($result === 'duplicate_kode_kk') {
@@ -47,9 +38,11 @@ if (isset($_POST['updateKeluarga'])) {
     } else {
         set_alert('error', 'Gagal Mengupdate', 'Terjadi kesalahan saat memperbarui data.');
     }
+
     header("Location: index.php?page=keluarga");
     exit;
 }
+
 
 ?>
 
@@ -59,9 +52,9 @@ if (isset($_POST['updateKeluarga'])) {
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center w-100 flex-wrap">
                     <h5 class="mb-0">Data Keluarga</h5>
-                    <button class="btn btn-primary btn-sm addKeluargaBtn">
-                        <i class="fas fa-plus"></i> Tambah Keluarga
-                    </button>
+                    <a href="index.php?page=createkeluarga" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Tambah Data
+                    </a>
                 </div>
             </div>
             <div class="card-body">

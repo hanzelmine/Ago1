@@ -3,7 +3,7 @@ require_once '../../database.php';
 
 $rayon = query("SELECT * FROM rayon");
 
-$action = $_GET['action'] ?? 'add';
+$action = $_GET['action'] ?? '';
 $id_keluarga = $_GET['id'] ?? null;
 
 $readonly = '';
@@ -34,9 +34,6 @@ if ($action === 'edit' || $action === 'detail') {
         $submit_name = 'updateKeluarga';
         $title = 'Edit';
     }
-} else {
-    $submit_name = 'insertKeluarga';
-    $title = 'Tambah';
 }
 
 function tanggalIndo($tanggal)
@@ -64,8 +61,7 @@ function tanggalIndo($tanggal)
 }
 ?>
 
-
-<div class="modal-header <?= $action === 'add' ? 'bg-primary' : ($action === 'edit' ? 'bg-success' : ($action === 'detail' ? 'bg-info' : '')) ?> text-white">
+<div class="modal-header <?= $action === 'edit' ? 'bg-success' : ($action === 'detail' ? 'bg-info' : '') ?> text-white">
     <h5 class="modal-title"><?= $title ?> Data Keluarga</h5>
     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
 </div>
@@ -88,7 +84,7 @@ function tanggalIndo($tanggal)
 
         <div class="form-group">
             <label>Nama Kepala Keluarga</label>
-            <input type="text" name="nama_keluarga" class="form-control" pattern="[A-Za-z\s\.\,\-]+" title="Hanya huruf, spasi, titik, koma, dan tanda hubung"
+            <input type="text" name="nama_keluarga" class="form-control capitalize-first" pattern="[A-Za-z\s\.\,\-]+" title="Hanya huruf, spasi, titik, koma, dan tanda hubung"
                 value="<?= htmlspecialchars($keluarga['nama_keluarga']) ?>" <?= $readonly ?> required>
         </div>
 
@@ -112,7 +108,7 @@ function tanggalIndo($tanggal)
 
         <div class="form-group">
             <label>Tempat Tinggal</label>
-            <input type="text" name="tempat_tinggal" class="form-control" maxlength="100"
+            <input type="text" name="tempat_tinggal" class="form-control capitalize-first" maxlength="100"
                 value="<?= htmlspecialchars($keluarga['tempat_tinggal']) ?>" <?= $readonly ?>>
         </div>
 
@@ -156,10 +152,10 @@ function tanggalIndo($tanggal)
             <a href="laporan/laporan_keluarga.php?id=<?= $id_keluarga ?>" class="btn btn-warning" target="_blank">
                 Cetak
             </a>
-
         <?php endif; ?>
+
         <?php if ($submit_name): ?>
-            <button type="submit" name="<?= $submit_name ?>" class="btn <?= $action === 'add' ? 'bg-primary' : 'bg-success' ?>">Simpan</button>
+            <button type="submit" name="<?= $submit_name ?>" class="btn bg-success">Simpan</button>
         <?php endif; ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
     </div>
