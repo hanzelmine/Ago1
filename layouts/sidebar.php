@@ -89,14 +89,14 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="index.php?page=pencarian" class="nav-link <?= ($page === 'pencarian') ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-search"></i>
                                 <p>
                                     Pencarian & Filter Data
                                 </p>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a href="index.php?page=profile" class="nav-link <?= ($page === 'profile') ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-circle-user"></i>
