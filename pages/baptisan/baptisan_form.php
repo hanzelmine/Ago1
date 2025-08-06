@@ -3,7 +3,6 @@ require_once '../../database.php';
 
 $action = $_GET['action'] ?? 'detail';
 $id_baptisan = $_GET['id'] ?? null;
-$id_jemaat = null;
 
 
 $readonly = '';
@@ -12,7 +11,7 @@ $title = '';
 
 $baptisan = [
     'id_baptisan' => '',
-    'id_jemaat' => $id_jemaat,
+    'id_jemaat' => '',
     'tempat_baptis' => '',
     'tanggal_baptis' => '',
     'no_surat_baptis' => '',

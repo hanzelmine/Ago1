@@ -1,20 +1,22 @@
 <?php
 require_once 'database.php';
-require_once 'functions/sidi.php'; // Ganti dengan fungsi Sidi
+require_once 'functions/pernikahan.php';
 
-// Ambil data jemaat yang belum memiliki sidi
-$jemaat_list = query("
-    SELECT j.id_jemaat, j.nama_lengkap
-    FROM jemaat j
-    LEFT JOIN sidi s ON j.id_jemaat = s.id_jemaat
-    WHERE s.id_jemaat IS NULL
-    ORDER BY j.nama_lengkap
-");
+// Ambil data jemaat (jika perlu filter yang belum menikah, sesuaikan query-nya)
+$suami_list = query("SELECT id_jemaat, nama_lengkap FROM jemaat 
+                    WHERE jenis_kelamin = 'Laki-laki' AND id_jemaat NOT IN (
+                        SELECT id_suami FROM pernikahan
+                    ) ORDER BY nama_lengkap");
+$istri_list = query("SELECT id_jemaat, nama_lengkap FROM jemaat 
+                    WHERE jenis_kelamin = 'Perempuan' AND id_jemaat NOT IN (
+                        SELECT id_istri FROM pernikahan
+                    ) ORDER BY nama_lengkap");
 
-if (isset($_POST['insertSidi'])) {
+
+if (isset($_POST['insertPernikahan'])) {
     $data = $_POST;
 
-    $results = insertSidi($data); // Akan mengembalikan array hasil
+    $results = insertPernikahan($data); // Function should return array of results like insertSidi
 
     $success = 0;
     $duplicate = 0;
@@ -31,29 +33,28 @@ if (isset($_POST['insertSidi'])) {
     }
 
     if ($success > 0) {
-        set_alert('success', 'Berhasil Ditambahkan', "Berhasil menambahkan $success data sidi.");
+        set_alert('success', 'Berhasil Ditambahkan', "Berhasil menambahkan $success data pernikahan.");
     }
 
     if ($duplicate > 0) {
-        set_alert('warning', 'Data Duplikat', "$duplicate data duplikat (id jemaat atau no surat).");
+        set_alert('warning', 'Data Duplikat', "$duplicate data duplikat (pasangan atau no surat).");
     }
 
     if ($fail > 0) {
         set_alert('error', 'Gagal Menambahkan', "$fail data gagal ditambahkan karena kesalahan sistem.");
     }
 
-    header("Location: index.php?page=sidi");
+    header("Location: index.php?page=pernikahan");
     exit;
 }
-
 ?>
 
-<h5>Tambah Data Sidi</h5>
+<h5>Tambah Data Pernikahan</h5>
 
-<form method="POST" id="createSidiForm">
-    <div id="sidiContainer">
-        <div class="card card-success sidi-form-group mb-3" data-index="0">
-            <div class="card-header d-flex justify-content-between align-items-center sidi-form-header">
+<form method="POST" id="createPernikahanForm">
+    <div id="pernikahanContainer">
+        <div class="card card-success pernikahan-form-group mb-3" data-index="0">
+            <div class="card-header d-flex justify-content-between align-items-center pernikahan-form-header">
                 <div class="card-tools ml-auto">
                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -63,39 +64,46 @@ if (isset($_POST['insertSidi'])) {
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="id_jemaat_0" class="form-label required">Nama Jemaat</label>
-                        <select id="id_jemaat_0" name="id_jemaat[]" class="form-control select2" required>
-                            <option value="">- Pilih Jemaat -</option>
-                            <?php foreach ($jemaat_list as $j): ?>
+                        <label for="id_suami_0" class="form-label required">Nama Suami</label>
+                        <select id="id_suami_0" name="id_suami[]" class="form-control select2" required>
+                            <option value="">- Pilih Jemaat Laki-laki -</option>
+                            <?php foreach ($suami_list as $j): ?>
                                 <option value="<?= $j['id_jemaat'] ?>"><?= htmlspecialchars($j['nama_lengkap']) ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <?php if (count($jemaat_list) === 0): ?>
-                            <div class="alert alert-warning mt-2">
-                                Semua jemaat sudah memiliki data sidi.
-                            </div>
-                        <?php endif; ?>
                     </div>
+
                     <div class="form-group col-md-6">
-                        <label for="tempat_sidi_0" class="form-label required">Tempat Sidi</label>
-                        <input id="tempat_sidi_0" type="text" name="tempat_sidi[]" class="form-control" required>
+                        <label for="id_istri_0" class="form-label required">Nama Istri</label>
+                        <select id="id_istri_0" name="id_istri[]" class="form-control select2" required>
+                            <option value="">- Pilih Jemaat Perempuan -</option>
+                            <?php foreach ($istri_list as $j): ?>
+                                <option value="<?= $j['id_jemaat'] ?>"><?= htmlspecialchars($j['nama_lengkap']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
+
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <label for="tanggal_sidi_0" class="form-label required">Tanggal Sidi</label>
-                        <input id="tanggal_sidi_0" type="date" name="tanggal_sidi[]" class="form-control" required>
+                        <label for="tanggal_nikah_0" class="form-label required">Tanggal Pernikahan</label>
+                        <input id="tanggal_nikah_0" type="date" name="tanggal_nikah[]" class="form-control" required>
                         <small>Bulan/Tanggal/Tahun</small>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="no_surat_sidi_0" class="form-label required">No Surat Sidi</label>
-                        <input id="no_surat_sidi_0" type="text" name="no_surat_sidi[]" class="form-control" required>
+                        <label for="tempat_nikah_0" class="form-label required">Tempat Pernikahan</label>
+                        <input id="tempat_nikah_0" type="text" name="tempat_nikah[]" class="form-control" required>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="pendeta_0" class="form-label required">Pendeta</label>
                         <input id="pendeta_0" type="text" name="pendeta[]" class="form-control" required>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="no_surat_nikah_0" class="form-label required">No Surat Nikah</label>
+                    <input id="no_surat_nikah_0" type="text" name="no_surat_nikah[]" class="form-control" required>
                 </div>
 
                 <div class="form-group">
@@ -107,11 +115,11 @@ if (isset($_POST['insertSidi'])) {
     </div>
 
     <div class="text-right mb-3">
-        <button type="button" class="btn btn-sm btn-secondary" id="addSidiBtn"><i class="fas fa-plus"></i> Tambah Form</button>
+        <button type="button" class="btn btn-sm btn-secondary" id="addPernikahanBtn"><i class="fas fa-plus"></i> Tambah Form</button>
     </div>
     <div class="text-right">
-        <button type="submit" name="insertSidi" class="btn btn-success">Simpan</button>
-        <a href="index.php?page=sidi" class="btn btn-secondary">Batal</a>
+        <button type="submit" name="insertPernikahan" class="btn btn-success">Simpan</button>
+        <a href="index.php?page=pernikahan" class="btn btn-secondary">Batal</a>
     </div>
 </form>
 
@@ -121,8 +129,8 @@ if (isset($_POST['insertSidi'])) {
             const maxForm = 5;
 
             function updateFormHeaders() {
-                $(".sidi-form-group").each(function(index) {
-                    const $header = $(this).find(".sidi-form-header");
+                $(".pernikahan-form-group").each(function(index) {
+                    const $header = $(this).find(".pernikahan-form-header");
                     let $left = $header.children("div").not(".card-tools").first();
                     const $right = $header.find(".card-tools");
 
@@ -131,7 +139,7 @@ if (isset($_POST['insertSidi'])) {
                         $right.before($left);
                     }
 
-                    $left.find("strong").text(`Form Sidi ke-${index + 1}`);
+                    $left.find("strong").text(`Form Pernikahan ke-${index + 1}`);
 
                     const $removeBtn = $right.find("button.btn-remove-confirm");
                     if (index === 0) {
@@ -143,7 +151,6 @@ if (isset($_POST['insertSidi'])) {
                 });
             }
 
-            // Apply required markers (gunakan config kamu sebelumnya)
             applyRequiredMarkers(document, [{
                     selector: "label.required",
                     position: "label-right"
@@ -167,9 +174,9 @@ if (isset($_POST['insertSidi'])) {
             ]);
 
             cloneFormGroup({
-                containerSelector: "#sidiContainer",
-                groupSelector: ".sidi-form-group",
-                addBtnSelector: "#addSidiBtn",
+                containerSelector: "#pernikahanContainer",
+                groupSelector: ".pernikahan-form-group",
+                addBtnSelector: "#addPernikahanBtn",
                 max: maxForm,
                 updateHeaders: updateFormHeaders,
                 requiredConfigs: [{
@@ -195,8 +202,8 @@ if (isset($_POST['insertSidi'])) {
                 ],
             });
 
-            $(document).on("click", ".sidi-form-group .btn-remove-confirm", function() {
-                const $formGroup = $(this).closest(".sidi-form-group");
+            $(document).on("click", ".pernikahan-form-group .btn-remove-confirm", function() {
+                const $formGroup = $(this).closest(".pernikahan-form-group");
                 confirmAction({
                     title: "Hapus form ini?",
                     text: "Data akan dihapus permanen.",

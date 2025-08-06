@@ -6,29 +6,29 @@ function insertSidi($data)
 {
     global $conn;
 
-    $total = count($data['id_jemaat']); // Pastikan semua input array memiliki jumlah yang sama
-    $inserted = 0;
+    $total = count($data['id_jemaat']);
+    $results = [];
 
     for ($i = 0; $i < $total; $i++) {
         $fields = [];
 
         foreach ($data as $key => $value) {
-            $input = is_array($value) ? ($value[$i] ?? '') : $value;
-            $cleanValue = trim($input);
+            $val = is_array($value) ? ($value[$i] ?? '') : $value;
+            $cleanValue = trim($val);
             $fields[$key] = mysqli_real_escape_string($conn, $cleanValue === '' ? '-' : $cleanValue);
         }
 
-        // Cek duplikat id_jemaat atau no_surat_sidi
+        // Cek duplikat untuk id_jemaat atau no_surat_sidi
         $check = mysqli_query($conn, "SELECT 1 FROM sidi 
             WHERE id_jemaat = '{$fields['id_jemaat']}' 
-            OR no_surat_sidi = '{$fields['no_surat_sidi']}' 
+               OR no_surat_sidi = '{$fields['no_surat_sidi']}' 
             LIMIT 1");
 
         if (mysqli_num_rows($check) > 0) {
-            continue; // Lewati baris ini jika duplikat
+            $results[] = 'duplicate';
+            continue;
         }
 
-        // Query insert
         $query = "INSERT INTO sidi (
             id_jemaat, tempat_sidi, tanggal_sidi, no_surat_sidi,
             pendeta, keterangan, created_at
@@ -38,22 +38,11 @@ function insertSidi($data)
         )";
 
         $result = mysqli_query($conn, $query);
-
-        if ($result) {
-            $inserted++;
-        } else {
-            error_log("Gagal insert sidi: " . mysqli_error($conn));
-        }
+        $results[] = $result ? true : false;
     }
 
-    // Hasil akhir
-    if ($inserted === 0) {
-        return 'duplicate'; // atau bisa 'none_inserted'
-    }
-
-    return true;
+    return $results;
 }
-
 
 function updateSidi($id, $data)
 {
@@ -67,7 +56,11 @@ function updateSidi($id, $data)
     }
 
     // Cek duplikat selain baris saat ini
-    $check = mysqli_query($conn, "SELECT 1 FROM sidi WHERE (id_jemaat = '{$fields['id_jemaat']}' OR no_surat_sidi = '{$fields['no_surat_sidi']}') AND id_sidi != $id LIMIT 1");
+    $check = mysqli_query($conn, "SELECT 1 FROM sidi 
+        WHERE (id_jemaat = '{$fields['id_jemaat']}' OR no_surat_sidi = '{$fields['no_surat_sidi']}') 
+        AND id_sidi != $id 
+        LIMIT 1");
+
     if (mysqli_num_rows($check) > 0) {
         error_log("Update gagal: id_jemaat atau no_surat_sidi sudah digunakan.");
         return 'duplicate';

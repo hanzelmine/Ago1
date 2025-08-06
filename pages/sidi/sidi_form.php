@@ -2,7 +2,7 @@
 require_once '../../database.php';
 
 $action = $_GET['action'] ?? 'detail';
-$id_jemaat = $_GET['id'] ?? null;
+$id_sidi = $_GET['id'] ?? null;
 
 $readonly = '';
 $submit_name = '';
@@ -10,7 +10,7 @@ $title = '';
 
 $sidi = [
     'id_sidi' => '',
-    'id_jemaat' => $id_jemaat,
+    'id_jemaat' => '',
     'tempat_sidi' => '',
     'tanggal_sidi' => '',
     'no_surat_sidi' => '',
@@ -19,16 +19,17 @@ $sidi = [
     'nama_lengkap' => ''
 ];
 
-if ($id_jemaat) {
+if ($id_sidi) {
     $result = query("
         SELECT s.*, j.nama_lengkap 
         FROM sidi s
         JOIN jemaat j ON s.id_jemaat = j.id_jemaat
-        WHERE s.id_jemaat = $id_jemaat
+        WHERE s.id_sidi = $id_sidi
     ");
 
     if (!empty($result)) {
         $sidi = $result[0];
+        $id_jemaat = $sidi['id_jemaat']; // Set juga id_jemaat agar hidden input aman
     }
 }
 
@@ -65,7 +66,9 @@ function formatTanggal($tgl)
 ?>
 
 <div class="modal-header <?= $action === "edit" ? "bg-success" : "bg-info" ?> text-white">
-    <h5 class="modal-title"><?= $title === "Detail" ? $title . " Sidi" : $title . " Data: " . htmlspecialchars($sidi['nama_lengkap']) ?></h5>
+    <h5 class="modal-title">
+        <?= $title === "Detail" ? $title . " Sidi" : $title . " Data: " . htmlspecialchars($sidi['nama_lengkap'] ?? '') ?>
+    </h5>
     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -76,7 +79,7 @@ function formatTanggal($tgl)
     <div class="modal-body px-3 px-sm-5">
         <div class="text-center mb-4">
             <h4 class="font-weight-bold text-uppercase">Informasi Sidi</h4>
-            <p class="text-black mb-2">Nama Jemaat: <strong><?= htmlspecialchars($sidi['nama_lengkap']) ?></strong></p>
+            <p class="text-black mb-2">Nama Jemaat: <strong><?= htmlspecialchars($sidi['nama_lengkap'] ?? '') ?></strong></p>
         </div>
 
         <hr>
