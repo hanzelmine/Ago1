@@ -1,6 +1,6 @@
 # ⛪ Church Information System - Ago1
 
-A web-based Church Information System developed using PHP and MySQL, designed to manage and organize church data including families, members (jemaat), and church zones (rayon). This system provides a user-friendly interface for admins to input, update, and generate reports on church community data.
+A web-based Church Information System developed using PHP and MySQL, designed to manage and organize church data including families, members (jemaat), church zones (rayon), and sacraments or lifecycle events such as baptism, sidi, marriage, death, and attestation. This system provides a user-friendly interface for admins to input, update, and generate reports on church community data.
 
 ---
 
@@ -21,8 +21,13 @@ A web-based Church Information System developed using PHP and MySQL, designed to
 - ✅ Family (Keluarga) Management
 - ✅ Church Member (Jemaat) Management
 - ✅ Zone/Region (Rayon) Categorization
+- ✅ Baptism (Baptisan) Records
+- ✅ Sidi (Confirmation) Records
+- ✅ Marriage (Pernikahan) Records
+- ✅ Death (Meninggal) Records
+- ✅ Attestation (Atestasi) Records
 - ✅ Dynamic Add/Edit/Detail modal forms
-- ✅ Birthday Tracking
+- ✅ Birthday & Anniversary Tracking
 - ✅ Export to PDF and Excel
 - ✅ Search and Filter with DataTables
 - ✅ Secure Login System with Role-based Redirects
@@ -75,6 +80,11 @@ $conn = mysqli_connect("localhost", "root", "", "gtm");
    - **Rayon**: Assign families to church zones
    - **Keluarga**: Manage family data
    - **Jemaat**: Manage church member details
+   - **Baptisan**: Record baptism details
+   - **Sidi**: Record sidi/confirmation details
+   - **Pernikahan**: Manage church marriage records
+   - **Meninggal**: Record deceased members
+   - **Atestasi**: Record incoming/outgoing attestation details
 
 4. Use **search & filter** for quick data access and click **Cetak** to generate PDF reports
 
@@ -94,7 +104,7 @@ $conn = mysqli_connect("localhost", "root", "", "gtm");
 ## 👤 Author
 
 - **Hanzel Mine**  
-  [github.com/hanzelmine](https://github.com/hanzelmine)
+  [https://github.com/hanzelmine](https://github.com/hanzelmine)
 
 ---
 
