@@ -8,8 +8,10 @@ $jemaat_list = query("
     FROM jemaat j
     LEFT JOIN meninggal m ON j.id_jemaat = m.id_jemaat
     WHERE m.id_jemaat IS NULL
+      AND j.status_jemaat IN ('Aktif', 'Meninggal')
     ORDER BY j.nama_lengkap
 ");
+
 
 if (isset($_POST['insertMeninggal'])) {
     $data = $_POST;

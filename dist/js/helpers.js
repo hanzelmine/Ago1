@@ -409,3 +409,12 @@ function cloneFormGroup({
     }
   });
 }
+
+document.addEventListener("input", function (e) {
+  if (e.target.classList.contains("capitalize-first")) {
+    const words = e.target.value.split(" ");
+    e.target.value = words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  }
+});

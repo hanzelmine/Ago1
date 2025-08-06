@@ -49,7 +49,7 @@ function formatTanggal($tgl)
                 <div class="form-row">
                     <div class="form-group col-md-5">
                         <label for="nama_lengkap_0" class="form-label required">Nama Lengkap</label>
-                        <input id="nama_lengkap_0" type="text" name="nama_lengkap[]" class="form-control" pattern="[A-Za-z\s\.\,\-]+" title="Hanya huruf, spasi, titik, koma, dan tanda hubung" required>
+                        <input id="nama_lengkap_0" type="text" name="nama_lengkap[]" class="form-control capitalize-first" pattern="[A-Za-z\s\.\,\-]+" title="Hanya huruf, spasi, titik, koma, dan tanda hubung. Setiap kata harus diawali huruf kapital" required>
                     </div>
 
                     <div class="form-group col-md-4">
@@ -74,7 +74,7 @@ function formatTanggal($tgl)
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="tempat_lahir_0" class="form-label required">Tempat Lahir</label>
-                        <input id="tempat_lahir_0" type="text" name="tempat_lahir[]" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" required>
+                        <input id="tempat_lahir_0" type="text" name="tempat_lahir[]" class="form-control capitalize-first" pattern="([A-Z][a-z]*(\s)?)+" title="Hanya boleh huruf dan spasi. dan Setiap kata harus diawali huruf kapital" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="tanggal_lahir_0" class="form-label required">Tanggal Lahir</label>
@@ -83,11 +83,20 @@ function formatTanggal($tgl)
                     </div>
                     <div class="form-group col-md-3">
                         <label for="status_dlm_keluarga_0" class="form-label required">Status dalam Keluarga</label>
-                        <input id="status_dlm_keluarga_0" type="text" name="status_dlm_keluarga[]" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" required>
+                        <input id="status_dlm_keluarga_0" type="text" name="status_dlm_keluarga[]" class="form-control capitalize-first" pattern="([A-Z][a-z]*(\s)?)+" title="Hanya boleh huruf dan spasi. dan Setiap kata harus diawali huruf kapital" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="status_jemaat_0" class="form-label required">Status Jemaat</label>
-                        <input id="status_jemaat_0" type="text" name="status_jemaat[]" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" placeholder="Aktif/Pindah/Meninggal/dll" required>
+                        <input
+                            id="status_jemaat_0"
+                            type="text"
+                            name="status_jemaat[]"
+                            class="form-control capitalize-first"
+                            pattern="([A-Z][a-z]*(\s)?)+"
+                            title="Setiap kata harus diawali huruf kapital, contoh: Aktif, Pindah, Meninggal"
+                            placeholder="Aktif/Pindah/Meninggal/dll"
+                            required>
+
                     </div>
                 </div>
 
@@ -121,11 +130,11 @@ function formatTanggal($tgl)
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="pendidikan_terakhir_0">Pendidikan Terakhir</label>
-                        <input id="pendidikan_terakhir_0" type="text" name="pendidikan_terakhir[]" class="form-control">
+                        <input id="pendidikan_terakhir_0" type="text" name="pendidikan_terakhir[]" class="form-control capitalize-first">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="pekerjaan_0">Pekerjaan</label>
-                        <input id="pekerjaan_0" type="text" name="pekerjaan[]" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi">
+                        <input id="pekerjaan_0" type="text" name="pekerjaan[]" class="form-control capitalize-first" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi">
                     </div>
                 </div>
             </div>
