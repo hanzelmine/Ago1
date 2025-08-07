@@ -29,7 +29,7 @@
                             <a href="index.php?page=keluarga" class="nav-link <?= in_array($page, ['keluarga', 'createkeluarga']) ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-house-user"></i>
                                 <p>
-                                    Data Keluarga
+                                    Data Kepala Keluarga
                                 </p>
                             </a>
                         </li>
@@ -82,7 +82,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="index.php?page=atestasi" class="nav-link <?= in_array($page, ['atestasi']) ? 'active' : '' ?>">
+                            <a href="index.php?page=atestasi" class="nav-link <?= in_array($page, ['atestasi', 'createatestasi']) ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-people-arrows"></i>
                                 <p>
                                     Data Atestasi

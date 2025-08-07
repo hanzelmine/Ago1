@@ -19,6 +19,22 @@
 <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- FancyBox JS -->
+<script src="plugins/fancybox/jquery.fancybox.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('[data-fancybox="gallery"]').fancybox({
+            // optional custom options
+            buttons: [
+                "zoom",
+                "fullScreen",
+                "thumbs",
+                "close"
+            ]
+        });
+    });
+</script>
+
 <!-- Select2 -->
 <script src="plugins/select2/js/select2.min.js"></script>
 <script>

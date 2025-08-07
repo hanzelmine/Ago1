@@ -165,7 +165,7 @@ function tanggalIndo($tanggal)
             buttons: [{
                 extend: 'excel',
                 title: 'Data Atestasi',
-                text: 'Cetak Data <small>(excel)</small>',
+                text: 'Cetak Data Atestasi <small>(excel)</small>',
                 exportOptions: {
                     columns: [0, 1, 2, 3],
                     modifier: {

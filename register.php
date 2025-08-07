@@ -91,7 +91,9 @@ if (isset($_POST['register'])) {
                                 <input type="file" id="gambarInput" name="gambar" class="form-control-file" accept="image/*">
                             </div>
                             <div class="mt-3 text-center">
-                                <img id="gambarPreview" src="#" style="display:none; max-width: 100%; border-radius: 10px; border: 1px solid #ccc;" />
+                                <a href="#" id="gambarPreviewLink" data-fancybox="preview" style="display: none;">
+                                    <img id="gambarPreview" src="#" style="max-width: 100%; border-radius: 10px; border: 1px solid #ccc;" />
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -104,7 +106,7 @@ if (isset($_POST['register'])) {
     <?php include 'layouts/allScripts.php' ?>
     <script>
         $(document).ready(function() {
-            previewImage('#gambarInput', '#gambarPreview');
+            previewImage('#gambarInput', '#gambarPreview', '#gambarPreviewLink');
         });
     </script>
     <?php show_alert(); ?>

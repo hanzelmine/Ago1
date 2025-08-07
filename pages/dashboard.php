@@ -134,9 +134,20 @@ foreach ($dataBaru as $items) {
 
 
 <div class="row">
-    <!-- Kartu Total Rayon -->
+    <!-- Kartu Total Jemaat -->
     <div class="col-lg-4 col-6">
         <div class="small-box bg-primary">
+            <div class="inner">
+                <h3><?= $totalJemaat ?></h3>
+                <p>Total Jemaat</p>
+            </div>
+            <div class="icon"><i class="fas fa-user-friends"></i></div>
+        </div>
+    </div>
+
+    <!-- Kartu Total Rayon -->
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-secondary">
             <div class="inner">
                 <h3><?= $totalRayon ?></h3>
                 <p>Total Rayon</p>
@@ -150,22 +161,12 @@ foreach ($dataBaru as $items) {
         <div class="small-box bg-success">
             <div class="inner">
                 <h3><?= $totalKeluarga ?></h3>
-                <p>Total Keluarga</p>
+                <p>Total Kepala Keluarga</p>
             </div>
             <div class="icon"><i class="fas fa-users"></i></div>
         </div>
     </div>
 
-    <!-- Kartu Total Jemaat -->
-    <div class="col-lg-4 col-6">
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3><?= $totalJemaat ?></h3>
-                <p>Total Jemaat</p>
-            </div>
-            <div class="icon"><i class="fas fa-user-friends"></i></div>
-        </div>
-    </div>
 </div>
 
 <div class="card card-outline card-red">

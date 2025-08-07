@@ -14,34 +14,32 @@
  *
  * @param {string} inputSelector - input[type="file"] selector
  * @param {string} imgSelector - target <img> to show preview
+ * @param {string|null} linkSelector - (optional) <a> selector to enable FancyBox/lightbox
  *
- * 💡 Example:
+ * 💡 Example (standard preview):
  * previewImage('#inputGambar', '#imgPreview');
+ *
+ * 💡 Example (preview with FancyBox):
+ * previewImage('#inputGambar', '#imgPreview', '#imgPreviewLink');
  */
-function previewImage(inputSelector, imgSelector) {
-  const allowedTypes = ["image/jpeg", "image/png"];
+function previewImage(inputSelector, imgSelector, linkSelector = null) {
+  const input = document.querySelector(inputSelector);
+  const img = document.querySelector(imgSelector);
+  const link = linkSelector ? document.querySelector(linkSelector) : null;
 
-  $(document).on("change", inputSelector, function () {
+  input.addEventListener("change", function () {
     const file = this.files[0];
-    const $img = $(imgSelector);
-
     if (file) {
-      if (!allowedTypes.includes(file.type)) {
-        Swal.fire({
-          icon: "error",
-          title: "Format Tidak Didukung",
-          text: "Hanya file gambar JPEG dan PNG yang diizinkan.",
-        });
-        $(this).val("");
-        $img.attr("src", "").hide();
-        return;
-      }
-
       const reader = new FileReader();
-      reader.onload = (e) =>
-        $img
-          .attr("src", e.target.result)
-          .css({ display: "block", margin: "0 auto" });
+      reader.onload = function (e) {
+        img.src = e.target.result;
+        img.style.display = "block";
+
+        if (link) {
+          link.href = e.target.result;
+          link.style.display = "inline-block";
+        }
+      };
       reader.readAsDataURL(file);
     }
   });

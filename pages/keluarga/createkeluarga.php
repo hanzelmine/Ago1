@@ -67,7 +67,7 @@ if (isset($_POST['insertKeluarga'])) {
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="nama_keluarga_0" class="form-label required">Nama Keluarga</label>
+                            <label for="nama_keluarga_0" class="form-label required">Nama Kepala Keluarga</label>
                             <input type="text" id="nama_keluarga_0" name="nama_keluarga[]" class="form-control capitalize-first" required>
                         </div>
                     </div>
@@ -91,11 +91,6 @@ if (isset($_POST['insertKeluarga'])) {
                         </div>
                     </div>
                 </div>
-
-
-
-
-
                 <div class="form-group">
                     <label for="alamat_0">Alamat</label>
                     <textarea id="alamat_0" name="alamat[]" class="form-control" rows="3"></textarea>
@@ -128,7 +123,7 @@ if (isset($_POST['insertKeluarga'])) {
                         $header.prepend($left);
                     }
 
-                    $left.find("strong").text(`Form Keluarga ke-${index + 1}`);
+                    $left.find("strong").text(`Form Kepala Keluarga ke-${index + 1}`);
 
                     const $removeBtn = $header.find("button.btn-remove-confirm");
                     if (index === 0) {

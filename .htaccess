@@ -1,9 +1,6 @@
 RewriteEngine On
-
-# Atur base untuk folder gtm
 RewriteBase /gtm/
 
-# Arahkan semua request ke index.php jika file atau folder tidak ditemukan
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [QSA,L]
+RewriteRule ^(.*)$ index.php [QSA,L]

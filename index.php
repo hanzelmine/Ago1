@@ -1,14 +1,28 @@
 <?php
 ob_start();
 session_start();
+
 // LOAD FILE HELPER 
 //===============================================================
 require_once 'database.php';
 require_once 'helpers.php';
-require_login();
+require_login(); // Ensure the user is logged in
 //===============================================================
 
-//ROUTING PAGES
+// ✅ REFRESH SESSION USER DATA (IMPORTANT FIX)
+if (isset($_SESSION['user']['id_user'])) {
+    $id_user = $_SESSION['user']['id_user'];
+
+    // Load fresh user data from DB
+    $userBaru = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id_user = '$id_user'"));
+
+    if ($userBaru) {
+        $_SESSION['user'] = $userBaru; // Overwrite session
+    }
+}
+
+//===============================================================
+// ROUTING PAGES
 //===============================================================
 $page = $_GET['page'] ?? 'dashboard'; // default halaman
 $pagesDir = __DIR__ . '/pages/';
@@ -23,47 +37,46 @@ $routes = [
     'createkeluarga'   => 'keluarga/createkeluarga.php',
     'pencarian'   => 'pencarian.php',
     'jemaat'   => 'jemaat/jemaat.php',
-    'createjemaat'  => 'jemaat/createJemaat.php', // add this
+    'createjemaat'  => 'jemaat/createJemaat.php',
     'baptisan'   => 'baptisan/baptisan.php',
-    'createbaptisan'  => 'baptisan/createbaptisan.php', // add this
+    'createbaptisan'  => 'baptisan/createbaptisan.php',
     'sidi'   => 'sidi/sidi.php',
-    'createsidi'  => 'sidi/createsidi.php', // add this
+    'createsidi'  => 'sidi/createsidi.php',
     'pernikahan'   => 'pernikahan/pernikahan.php',
-    'createpernikahan'  => 'pernikahan/createpernikahan.php', // add this
+    'createpernikahan'  => 'pernikahan/createpernikahan.php',
     'atestasi'   => 'atestasi/atestasi.php',
-    'createatestasi'  => 'atestasi/createatestasi.php', // add this
+    'createatestasi'  => 'atestasi/createatestasi.php',
     'meninggal'   => 'meninggal/meninggal.php',
-    'createmeninggal'  => 'meninggal/createmeninggal.php', // add this
+    'createmeninggal'  => 'meninggal/createmeninggal.php',
     'logout'    => 'functions/auth.php'
 ];
 //===============================================================
 
-//LOGOUT
+// LOGOUT
 //===============================================================
 if ($page === 'logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once 'functions/auth.php';
     logout();
     exit;
 }
+
 // Hindari path traversal (keamanan)
 $page = str_replace(['..', './', '//'], '', $page);
 //===============================================================
 
-//SESSION USER
+// SESSION USER (after refresh above)
 //===============================================================
 $user = $_SESSION['user'] ?? null;
 
 if ($user) {
-    $id_user       = $user['id_user'];
-    $nama     = $user['nama'];
-    $username = $user['username'];
-    $role     = $user['role'];
-    $gambar   = $user['gambar'] ? 'upload/users/' . $user['gambar'] : 'assets/default.png';
-    $createdAt = $user['created_at'] ?? null;
-    $createdFormatted = $createdAt ? date('d M. Y', strtotime($createdAt)) : '-';
+    $id_user   = $user['id_user'];
+    $nama      = $user['nama'];
+    $username  = $user['username'];
+    $role      = $user['role'];
 }
 //===============================================================
 ?>
+
 
 
 <!DOCTYPE html>

@@ -83,11 +83,11 @@ if (isset($_POST['insertAtestasi'])) {
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="gereja_asal_tujuan_0" class="form-label required">Gereja Asal/Tujuan</label>
-                        <input id="gereja_asal_tujuan_0" type="text" name="gereja_asal_tujuan[]" class="form-control" required>
+                        <input id="gereja_asal_tujuan_0" type="text" name="gereja_asal_tujuan[]" class="form-control capitalize-first" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="keterangan_0">Keterangan Tambahan</label>
-                        <textarea id="keterangan_0" name="keterangan[]" class="form-control" rows="2"></textarea>
+                        <textarea id="keterangan_0" name="keterangan[]" class="form-control" rows="3"></textarea>
                     </div>
                 </div>
             </div>

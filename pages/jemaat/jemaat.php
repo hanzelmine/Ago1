@@ -71,8 +71,8 @@ function tanggalIndo($tanggal)
                 </div>
             </div>
             <div class="card-body">
-                <div class="d-flex justify-content-end align-items-center mb-1">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#recap">Rekap Data Jemaat</button>
+                <div class="d-flex justify-content-end align-items-center mb-2">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#recap">Rekap Data Jemaat</button>
                 </div>
 
                 <div class="modal fade" id="recap" tabindex="-1" role="dialog" aria-labelledby="recapLabel" aria-hidden="true">

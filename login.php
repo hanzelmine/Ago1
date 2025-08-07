@@ -59,7 +59,7 @@ if (isset($_POST['login'])) {
                     </div>
                     <div class="row">
                         <div class="col-8 d-flex align-items-center">
-                            <!-- <small>Don't have account? Click <a href="register.php">here</a></small> -->
+                            <small>Don't have account? Click <a href="register.php">here</a></small>
                         </div>
                         <!-- /.col -->
                         <div class="col-4">

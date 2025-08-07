@@ -44,7 +44,7 @@ if ($action === 'edit' || $action === 'detail') {
             <input type="hidden" name="id_rayon" value="<?= $id_rayon ?>">
         <?php endif; ?>
         <div class="form-group">
-            <label for="nama_rayon">Nama Rayon</label>
+            <label for="nama_rayon" class="form-label required">Nama Rayon</label>
             <input type="text"
                 name="nama_rayon"
                 placeholder="Contoh : Rayon 1"

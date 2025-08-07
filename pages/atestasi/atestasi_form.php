@@ -93,7 +93,7 @@ if ($action === 'detail') {
                 </div>
                 <div class="form-group col-md-6">
                     <label>Gereja Asal/Tujuan</label>
-                    <input type="text" name="gereja_asal_tujuan" class="form-control" value="<?= htmlspecialchars($atestasi['gereja_asal_tujuan']) ?>" <?= $readonly ?> required>
+                    <input type="text" name="gereja_asal_tujuan" class="form-control capitalize-first" value="<?= htmlspecialchars($atestasi['gereja_asal_tujuan']) ?>" <?= $readonly ?> required>
                 </div>
             </div>
 

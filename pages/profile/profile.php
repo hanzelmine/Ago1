@@ -4,8 +4,12 @@ require_once 'functions/auth.php';
 if (isset($_POST['update_profile'])) {
     $result = update_profile($_POST);
 
-
     if ($result === true) {
+        // 🟢 Refresh session with updated data
+        $id_user = $_SESSION['user']['id_user'];
+        $updatedUser = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id_user = '$id_user'"));
+        $_SESSION['user'] = $updatedUser;
+
         set_alert('success', 'Berhasil', 'Profil berhasil diperbarui');
     } elseif ($result === 'error') {
         set_alert('error', 'Validasi Gagal', 'Nama dan Username tidak boleh kosong!');
@@ -22,31 +26,47 @@ if (isset($_POST['update_profile'])) {
     header('Location: index.php?page=profile');
     exit;
 }
+
+// Ambil data user terbaru
+$id_user = $_SESSION['user']['id_user'];
+$user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id_user = '$id_user'"));
+
+$nama     = $user['nama'] ?? '';
+$username = $user['username'] ?? '';
+$role     = $user['role'] ?? 'User';
+$gambar   = $user['gambar'] ?? 'default.png';
+$gambar_path = "upload/users/$gambar";
+$gambar_url = file_exists($gambar_path) ? "$gambar_path?t=" . filemtime($gambar_path) : 'upload/users/default.png';
+
 ?>
 
 <div class="row">
     <!-- LEFT PROFILE PREVIEW -->
     <div class="col-md-5">
         <div class="card card-primary card-outline">
-            <div class="card-body box-profile ">
-                <div class="text-center mb-3 ">
-                    <img
-                        id="imgPreviewProfile"
-                        class=" img-fluid img-circle elevation-3"
-                        src="<?= $gambar ?>?t=<?= time() ?>"
-                        alt="User profile picture"
-                        style="width: 250px; height: 250px; object-fit: cover;">
+            <div class="card-body box-profile">
+                <!-- Wrap image in anchor tag for FancyBox -->
+                <div class="text-center mb-3">
+                    <a href="<?= htmlspecialchars($gambar_url) ?>" data-fancybox="profile">
+                        <img
+                            id="imgPreviewProfile"
+                            class="img-fluid img-circle elevation-3"
+                            src="<?= htmlspecialchars($gambar_url) ?>"
+                            alt="User profile picture"
+                            style="width: 250px; height: 250px; object-fit: cover;">
+                    </a>
                 </div>
 
+
                 <h3 class="profile-username text-center"><?= htmlspecialchars($nama) ?></h3>
-                <p class="text-muted text-center"><?= ucfirst($role) ?></p>
+                <p class="text-muted text-center"><?= htmlspecialchars(ucfirst($role)) ?></p>
 
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
                         <b>Username</b> <span class="float-right"><?= htmlspecialchars($username) ?></span>
                     </li>
                     <li class="list-group-item">
-                        <b>Role</b> <span class="float-right"><?= ucfirst($role) ?></span>
+                        <b>Role</b> <span class="float-right"><?= htmlspecialchars(ucfirst($role)) ?></span>
                     </li>
                 </ul>
             </div>
@@ -108,7 +128,7 @@ if (isset($_POST['update_profile'])) {
 </div>
 
 <script>
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function() {
         previewImage('#gambarProfile', '#imgPreviewProfile');
     });
 </script>

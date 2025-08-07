@@ -51,7 +51,7 @@ if (isset($_POST['updateKeluarga'])) {
         <div class="card card-outline card-primary">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center w-100 flex-wrap">
-                    <h5 class="mb-0">Data Keluarga</h5>
+                    <h5 class="mb-0">Data Kepala Keluarga</h5>
                     <a href="index.php?page=createkeluarga" class="btn btn-primary btn-sm">
                         <i class="fas fa-plus"></i> Tambah Data
                     </a>

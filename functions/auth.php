@@ -91,13 +91,12 @@ function update_profile()
         return 'unauthorized';
     }
 
-    $id_user = $_SESSION['user']['id_user'];
-    $nama    = mysqli_real_escape_string($conn, trim($_POST['nama']));
+    $id_user  = $_SESSION['user']['id_user'];
+    $nama     = mysqli_real_escape_string($conn, trim($_POST['nama']));
     $username = mysqli_real_escape_string($conn, trim($_POST['username']));
     $password = $_POST['password'];
     $gambar   = $_FILES['gambar'] ?? null;
 
-    // Validasi
     if (empty($nama) || empty($username)) {
         return 'error';
     }
@@ -108,63 +107,51 @@ function update_profile()
         return 'exists';
     }
 
-    // Gambar default saat ini
-    $gambar_name = $_SESSION['user']['gambar'] ?? 'upload/default.png';
+    // Ambil nama gambar lama dari DB, bukan session
+    $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT gambar FROM user WHERE id_user = '$id_user'"));
+    $gambar_lama = $user['gambar'] ?? 'default.png';
 
     $upload_dir = 'upload/users/';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
 
-    $gambar_name = $_SESSION['user']['gambar'] ?? 'default.png'; // Hanya nama file, tanpa path
+    $gambar_name = $gambar_lama; // Default: gambar lama tetap
 
     if ($gambar && $gambar['error'] === 0) {
-        $ext = pathinfo($gambar['name'], PATHINFO_EXTENSION);
-        $new_name = uniqid('user_') . '.' . strtolower($ext);
+        $ext       = pathinfo($gambar['name'], PATHINFO_EXTENSION);
+        $new_name  = uniqid('user_') . '.' . strtolower($ext);
         $gambar_path = $upload_dir . $new_name;
 
         if (move_uploaded_file($gambar['tmp_name'], $gambar_path)) {
             // Hapus gambar lama jika bukan default
-            if ($gambar_name !== 'default.png' && file_exists($upload_dir . $gambar_name)) {
-                unlink($upload_dir . $gambar_name);
+            if ($gambar_lama !== 'default.png' && file_exists($upload_dir . $gambar_lama)) {
+                unlink($upload_dir . $gambar_lama);
             }
 
-            $gambar_name = $new_name; // ✅ Simpan hanya nama file
+            $gambar_name = $new_name;
         } else {
-            return 'fail'; // gagal upload
+            return 'fail';
         }
     }
 
-
-    // Jika isi password, update
-    if (!empty($password)) {
-        $password_hash = password_hash($password, PASSWORD_DEFAULT);
-        $query = "UPDATE user SET 
-                    nama = '$nama',
-                    username = '$username',
-                    password = '$password_hash',
-                    gambar = '$gambar_name',
-                    updated_at = NOW()
-                  WHERE id_user = '$id_user'";
-    } else {
-        $query = "UPDATE user SET 
-                    nama = '$nama',
-                    username = '$username',
-                    gambar = '$gambar_name',
-                    updated_at = NOW()
-                  WHERE id_user = '$id_user'";
-    }
+    // Update DB
+    $query = empty($password)
+        ? "UPDATE user SET nama='$nama', username='$username', gambar='$gambar_name', updated_at=NOW() WHERE id_user='$id_user'"
+        : "UPDATE user SET nama='$nama', username='$username', password='" . password_hash($password, PASSWORD_DEFAULT) . "', gambar='$gambar_name', updated_at=NOW() WHERE id_user='$id_user'";
 
     $update = mysqli_query($conn, $query);
 
     if ($update) {
-        // Perbarui session
-        $_SESSION['user']['nama']     = $nama;
-        $_SESSION['user']['username'] = $username;
-        $_SESSION['user']['gambar']   = $gambar_name;
+        // Get the fresh full user data from DB
+        $result = mysqli_query($conn, "SELECT * FROM user WHERE id_user = '$id_user'");
+        if ($result && $newUser = mysqli_fetch_assoc($result)) {
+            $_SESSION['user'] = $newUser;
+        }
 
         return true;
     }
+
 
     return 'fail';
 }
