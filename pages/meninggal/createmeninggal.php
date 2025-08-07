@@ -53,7 +53,7 @@ if (isset($_POST['insertMeninggal'])) {
 
 <form method="POST" id="createMeninggalForm">
     <div id="meninggalContainer">
-        <div class="card card-danger meninggal-form-group mb-3" data-index="0">
+        <div class="card card-primary meninggal-form-group mb-3" data-index="0">
             <div class="card-header d-flex justify-content-between align-items-center meninggal-form-header">
                 <div class="card-tools ml-auto">
                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
@@ -81,7 +81,7 @@ if (isset($_POST['insertMeninggal'])) {
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="tempat_meninggal_0" class="form-label required">Tempat Meninggal</label>
-                        <input id="tempat_meninggal_0" type="text" name="tempat_meninggal[]" class="form-control" required>
+                        <input id="tempat_meninggal_0" type="text" name="tempat_meninggal[]" class="form-control capitalize-first" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="sebab_meninggal_0" class="form-label">Penyebab</label>

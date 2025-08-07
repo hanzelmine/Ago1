@@ -153,7 +153,7 @@ function formatTanggal($tgl)
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Tempat Nikah</label>
-                    <input type="text" name="tempat_nikah" class="form-control" value="<?= htmlspecialchars($pernikahan['tempat_nikah']) ?>" required>
+                    <input type="text" name="tempat_nikah" class="form-control capitalize-first" value="<?= htmlspecialchars($pernikahan['tempat_nikah']) ?>" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label>Tanggal Nikah</label>
@@ -168,7 +168,7 @@ function formatTanggal($tgl)
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Pendeta</label>
-                    <input type="text" name="pendeta" class="form-control" value="<?= htmlspecialchars($pernikahan['pendeta']) ?>">
+                    <input type="text" name="pendeta" class="form-control capitalize-first" value="<?= htmlspecialchars($pernikahan['pendeta']) ?>">
                 </div>
                 <div class="form-group col-md-8">
                     <label>Keterangan</label>

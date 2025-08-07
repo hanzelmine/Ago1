@@ -64,11 +64,11 @@ function tanggalIndo($tanggal)
 
 <div class="row">
     <div class="col-12">
-        <div class="card card-outline card-danger">
+        <div class="card card-outline card-primary">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center w-100 flex-wrap">
                     <h5 class="mb-0">Data Meninggal</h5>
-                    <a href="index.php?page=createmeninggal" class="btn btn-danger btn-sm">
+                    <a href="index.php?page=createmeninggal" class="btn btn-primary btn-sm">
                         <i class="fas fa-plus"></i> Tambah Data
                     </a>
                 </div>

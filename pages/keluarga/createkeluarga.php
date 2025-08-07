@@ -98,7 +98,7 @@ if (isset($_POST['insertKeluarga'])) {
 
                 <div class="form-group">
                     <label for="alamat_0">Alamat</label>
-                    <textarea id="alamat_0" name="alamat[]" class="form-control" rows="2"></textarea>
+                    <textarea id="alamat_0" name="alamat[]" class="form-control" rows="3"></textarea>
                 </div>
             </div>
         </div>

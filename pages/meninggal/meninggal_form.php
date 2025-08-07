@@ -64,7 +64,7 @@ function formatTanggal($tgl)
 }
 ?>
 
-<div class="modal-header <?= $action === "edit" ? "bg-danger" : "bg-dark" ?> text-white">
+<div class="modal-header <?= $action === "edit" ? "bg-primary" : "bg-success" ?> text-white">
     <h5 class="modal-title">
         <?= $title === "Detail" ? $title . " Data Kematian" : $title . " Data: " . htmlspecialchars($meninggal['nama_lengkap'] ?? '') ?>
     </h5>
@@ -109,7 +109,7 @@ function formatTanggal($tgl)
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Tempat Meninggal</label>
-                    <input type="text" name="tempat_meninggal" class="form-control" value="<?= htmlspecialchars($meninggal['tempat_meninggal']) ?>" <?= $readonly ?> required>
+                    <input type="text" name="tempat_meninggal" class="form-control capitalize-first" value="<?= htmlspecialchars($meninggal['tempat_meninggal']) ?>" <?= $readonly ?> required>
                 </div>
                 <div class="form-group col-md-4">
                     <label>Tanggal Meninggal</label>

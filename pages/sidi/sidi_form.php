@@ -112,7 +112,7 @@ function formatTanggal($tgl)
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Tempat Sidi</label>
-                    <input type="text" name="tempat_sidi" class="form-control" value="<?= htmlspecialchars($sidi['tempat_sidi']) ?>" <?= $readonly ?> required>
+                    <input type="text" name="tempat_sidi" class="form-control capitalize-first" value="<?= htmlspecialchars($sidi['tempat_sidi']) ?>" <?= $readonly ?> required>
                 </div>
                 <div class="form-group col-md-4">
                     <label>Tanggal Sidi</label>
@@ -128,7 +128,7 @@ function formatTanggal($tgl)
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Pendeta</label>
-                    <input type="text" name="pendeta" class="form-control" value="<?= htmlspecialchars($sidi['pendeta']) ?>" <?= $readonly ?>>
+                    <input type="text" name="pendeta" class="form-control capitalize-first" value="<?= htmlspecialchars($sidi['pendeta']) ?>" <?= $readonly ?>>
                 </div>
                 <div class="form-group col-md-8">
                     <label>Keterangan</label>

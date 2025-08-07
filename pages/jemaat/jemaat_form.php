@@ -170,7 +170,7 @@ function formatTanggal($tgl)
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Nama Lengkap</label>
-                    <input type="text" name="nama_lengkap" class="form-control" pattern="[A-Za-z\s\.\,\-]+" value="<?= htmlspecialchars($jemaat['nama_lengkap']) ?>" title="Hanya huruf, spasi, titik, koma, dan tanda hubung" <?= $readonly ?> required>
+                    <input type="text" name="nama_lengkap" class="form-control capitalize-first" pattern="[A-Za-z\s\.\,\-]+" value="<?= htmlspecialchars($jemaat['nama_lengkap']) ?>" title="Hanya huruf, spasi, titik, koma, dan tanda hubung" <?= $readonly ?> required>
                 </div>
                 <div class="form-group col-md-3">
                     <label>Kode Kepala Keluarga</label>
@@ -197,7 +197,7 @@ function formatTanggal($tgl)
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label>Tempat Lahir</label>
-                    <input type="text" name="tempat_lahir" class="form-control" value="<?= htmlspecialchars($jemaat['tempat_lahir']) ?>" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" <?= $readonly ?> required>
+                    <input type="text" name="tempat_lahir" class="form-control capitalize-first" value="<?= htmlspecialchars($jemaat['tempat_lahir']) ?>" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" <?= $readonly ?> required>
                 </div>
                 <div class="form-group col-md-3">
                     <label>Tanggal Lahir</label>
@@ -206,11 +206,11 @@ function formatTanggal($tgl)
                 </div>
                 <div class="form-group col-md-3">
                     <label>Status dalam Keluarga</label>
-                    <input type="text" name="status_dlm_keluarga" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" value="<?= htmlspecialchars($jemaat['status_dlm_keluarga']) ?>" <?= $readonly ?> required>
+                    <input type="text" name="status_dlm_keluarga" class="form-control capitalize-first" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" value="<?= htmlspecialchars($jemaat['status_dlm_keluarga']) ?>" <?= $readonly ?> required>
                 </div>
                 <div class="form-group col-md-3">
                     <label>Status Jemaat</label>
-                    <input type="text" name="status_jemaat" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" value="<?= htmlspecialchars($jemaat['status_jemaat']) ?>" <?= $readonly ?> required>
+                    <input type="text" name="status_jemaat" class="form-control capitalize-first" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" value="<?= htmlspecialchars($jemaat['status_jemaat']) ?>" <?= $readonly ?> required>
                     <small>(Aktif/Pindah/Meninggal/dll)</small>
                 </div>
 
@@ -259,11 +259,11 @@ function formatTanggal($tgl)
 
                 <div class="form-group col-md-4">
                     <label>Pendidikan Terakhir</label>
-                    <input type="text" name="pendidikan_terakhir" class="form-control" value="<?= htmlspecialchars($jemaat['pendidikan_terakhir']) ?>" <?= $readonly ?>>
+                    <input type="text" name="pendidikan_terakhir" class="form-control capitalize-first" value="<?= htmlspecialchars($jemaat['pendidikan_terakhir']) ?>" <?= $readonly ?>>
                 </div>
                 <div class="form-group col-md-4">
                     <label>Pekerjaan</label>
-                    <input type="text" name="pekerjaan" class="form-control" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" value="<?= htmlspecialchars($jemaat['pekerjaan']) ?>" <?= $readonly ?>>
+                    <input type="text" name="pekerjaan" class="form-control capitalize-first" pattern="[A-Za-z\s]+" title="Hanya boleh huruf dan spasi" value="<?= htmlspecialchars($jemaat['pekerjaan']) ?>" <?= $readonly ?>>
                 </div>
             </div>
         </div>

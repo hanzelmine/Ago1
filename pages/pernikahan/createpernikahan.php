@@ -93,11 +93,11 @@ if (isset($_POST['insertPernikahan'])) {
                     </div>
                     <div class="form-group col-md-4">
                         <label for="tempat_nikah_0" class="form-label required">Tempat Pernikahan</label>
-                        <input id="tempat_nikah_0" type="text" name="tempat_nikah[]" class="form-control" required>
+                        <input id="tempat_nikah_0" type="text" name="tempat_nikah[]" class="form-control capitalize-first" required>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="pendeta_0" class="form-label required">Pendeta</label>
-                        <input id="pendeta_0" type="text" name="pendeta[]" class="form-control" required>
+                        <input id="pendeta_0" type="text" name="pendeta[]" class="form-control capitalize-first" required>
                     </div>
                 </div>
 
@@ -108,7 +108,7 @@ if (isset($_POST['insertPernikahan'])) {
 
                 <div class="form-group">
                     <label for="keterangan_0">Keterangan</label>
-                    <textarea id="keterangan_0" name="keterangan[]" class="form-control" rows="2"></textarea>
+                    <textarea id="keterangan_0" name="keterangan[]" class="form-control" rows="3"></textarea>
                 </div>
             </div>
         </div>
